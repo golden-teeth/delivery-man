@@ -1,12 +1,15 @@
 package com.delivery_man.entity;
 
+import com.delivery_man.dto.MenuCreateRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
 @Getter
 @Entity
+@NoArgsConstructor
 public class Menu extends BaseEntity {
     @Id
     @Column(name = "menu_id")
@@ -21,4 +24,9 @@ public class Menu extends BaseEntity {
     private String status;
 
 
+    public Menu(MenuCreateRequestDto dto) {
+        this.name = dto.getName();
+        this.price = dto.getPrice();
+        this.status="use";
+    }
 }
