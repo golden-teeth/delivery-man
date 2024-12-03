@@ -24,4 +24,20 @@ public class MenuController {
         MenuResponseDto responseDto = service.create(dto);
         return new ResponseEntity<>(responseDto,HttpStatus.OK);
     }
+
+    @PutMapping("/{menuId}")
+    public ResponseEntity<MenuResponseDto> update(@PathVariable("shopId")Long shopId,
+                                                  @PathVariable("menuId")Long menuId,
+                                                  @Valid @RequestBody MenuUpdateRequestDto dto){
+        dto.setIds(1L,shopId,menuId);
+        MenuResponseDto responseDto = service.update(dto);
+        return new ResponseEntity<>(responseDto,HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{menuId}")
+    public ResponseEntity<Void> delete(@PathVariable("shopId") Long shopId,
+                                       @PathVariable("menuId")Long menuId){
+        service.delete(shopId, menuId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

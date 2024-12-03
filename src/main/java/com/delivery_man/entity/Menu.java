@@ -29,4 +29,14 @@ public class Menu extends BaseEntity {
         this.price = dto.getPrice();
         this.status="use";
     }
+
+    public void update(MenuUpdateRequestDto dto) {
+        this.name = dto.getName();
+        this.price = dto.getPrice();
+
+    }
+
+    public void delete() {
+        this.status="delete";
+    }
 }

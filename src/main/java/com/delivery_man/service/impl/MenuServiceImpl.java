@@ -25,4 +25,44 @@ public class MenuServiceImpl implements MenuService {
         Menu savedMenu = repository.save(menu);
         return new MenuResponseDto(savedMenu);
     }
+
+    @Override
+    public MenuResponseDto update(MenuUpdateRequestDto dto) {
+        //검증
+        //dto 검증
+        validateUpdateDto(dto);
+        //shop id 검증
+        //user id 검증
+
+        //menu 검증
+        Menu findByMenuId = repository.findById(dto.getMenuId())
+                .orElseThrow(()->new RuntimeException());
+
+
+        findByMenuId.update(dto);
+
+        return new MenuResponseDto(findByMenuId);
+
+    }
+
+    @Override
+    public void delete(Long shopId, Long menuId) {
+        //검증
+        //shop 검증
+
+        //menuId 검증
+        Menu menuById = repository.findById(menuId)
+                .orElseThrow(() -> new RuntimeException());
+
+
+        menuById.delete();
+        }
+
+    private void validateUpdateDto(MenuUpdateRequestDto dto) {
+        if((dto.getName()==null && dto.getPrice()!=null) ||
+                (dto.getName()!=null && dto.getPrice()==null)){
+            throw new RuntimeException();
+        }
+    }
+
 }
