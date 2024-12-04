@@ -21,7 +21,6 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     @Override
@@ -55,13 +54,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public void leaveUser(Long userId, UserLeaveRequestDto userLeaveRequestDto, HttpServletRequest request, Long sessionId) {
 
-        if (userId.equals(sessionId)) {
+        if (!userId.equals(sessionId)) {
             throw new ApiException(UserErrorCode.INVALID_SESSION_ID);
         }
 
         User findUser = userRepository.findById(userId).orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
 
-        if (!passwordEncoder.matches(userLeaveRequestDto.getPassword(), findUser.getPassword())) {
+        if (!PasswordEncoder.matches(userLeaveRequestDto.getPassword(), findUser.getPassword())) {
             throw new ApiException(UserErrorCode.INVALID_PASSWORD);
         }
 

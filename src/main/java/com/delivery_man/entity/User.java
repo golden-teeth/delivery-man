@@ -1,5 +1,6 @@
 package com.delivery_man.entity;
 
+import com.delivery_man.config.PasswordEncoder;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -32,7 +33,7 @@ public class User extends BaseEntity {
 
     public User(String email, String password, String grade, String name) {
         this.email = email;
-        this.password = password;
+        this.password = PasswordEncoder.encode(password);
         this.grade = grade;
         this.name = name;
         this.status = "normal";

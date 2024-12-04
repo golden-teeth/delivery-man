@@ -1,6 +1,7 @@
 package com.delivery_man.controller;
 
 import com.delivery_man.config.Const;
+import com.delivery_man.dto.Authentication;
 import com.delivery_man.dto.UserLeaveRequestDto;
 import com.delivery_man.dto.UserSignUpRequestDto;
 import com.delivery_man.dto.UserSignUpResponseDto;
@@ -29,8 +30,9 @@ public class UserController {
     public ResponseEntity<String> leaveUser(@PathVariable Long userId,
                           @RequestBody UserLeaveRequestDto userLeaveRequestDto,
                           HttpServletRequest request,
-                          @SessionAttribute(name = Const.SESSION_KEY) Long sessionId
+                          @SessionAttribute(name = Const.SESSION_KEY) Authentication authentication
     ) {
+        Long sessionId = authentication.getId();
         userService.leaveUser(userId,userLeaveRequestDto,request,sessionId);
 
         return ResponseEntity.ok().body("정상적으로 삭제되었습니다.");
