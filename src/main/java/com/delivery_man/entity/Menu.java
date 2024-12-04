@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 @Getter
 @Entity
 @NoArgsConstructor
+@Table(name = "menu")
 public class Menu extends BaseEntity {
     @Id
     @Column(name = "menu_id")
