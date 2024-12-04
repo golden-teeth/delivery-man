@@ -36,4 +36,10 @@ public class Menu extends BaseEntity {
         this.price = dto.getPrice();
 
     }
+
+
+    public void delete() {
+        this.status="delete";
+    }
+
 }

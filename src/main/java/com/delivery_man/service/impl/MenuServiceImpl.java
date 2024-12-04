@@ -46,6 +46,20 @@ public class MenuServiceImpl implements MenuService {
 
     }
 
+    @Override
+    public void delete(Long shopId, Long menuId) {
+        //검증
+        //shop 검증
+
+        //menuId 검증
+        Menu menuById = repository.findById(menuId)
+                .orElseThrow(() -> new RuntimeException());
+
+
+        menuById.delete();
+        }
+
+
     private void validateUpdateDto(MenuUpdateRequestDto dto) {
         if((dto.getName()==null && dto.getPrice()!=null) ||
                 (dto.getName()!=null && dto.getPrice()==null)){
