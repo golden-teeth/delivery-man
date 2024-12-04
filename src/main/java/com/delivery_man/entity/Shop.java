@@ -1,5 +1,7 @@
 package com.delivery_man.entity;
 
+import com.delivery_man.enums.ClosedDays;
+import com.delivery_man.enums.ShopStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -20,8 +22,9 @@ public class Shop extends BaseEntity{
     @Column(nullable = false)
     private BigDecimal minimumPrice;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String status;
+    private ShopStatus status;
 
     @Column(nullable = false)
     private String openAt;
@@ -29,8 +32,9 @@ public class Shop extends BaseEntity{
     @Column(nullable = false)
     private String closeAt;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String closedDays;
+    private ClosedDays closedDays;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -39,7 +43,7 @@ public class Shop extends BaseEntity{
     public Shop() {
     }
 
-    public Shop(String name, BigDecimal minimumPrice, String status, String openAt, String closeAt, String closedDays, User user) {
+    public Shop(String name, BigDecimal minimumPrice, ShopStatus status, String openAt, String closeAt, ClosedDays closedDays, User user) {
         this.name = name;
         this.minimumPrice = minimumPrice;
         this.status = status;
