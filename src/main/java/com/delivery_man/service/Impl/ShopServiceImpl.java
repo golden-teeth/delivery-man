@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +23,12 @@ public class ShopServiceImpl implements ShopService {
     private final ShopRepository shopRepository;
     private final UserRepository userRepository;
 
+    /**
+     * 가게 생성
+     * @param dto
+     * @param sessionId
+     * @return
+     */
     @Override
     public ShopResponseDto createShop(ShopCreateRequestDto dto, Long sessionId) {
         User findUser = userRepository.findById(sessionId)
@@ -40,5 +47,21 @@ public class ShopServiceImpl implements ShopService {
         Shop shop = new Shop(dto.getName(),dto.getMinimumPrice(),dto.getStatus(),dto.getOpenAt(), dto.getCloseAt(), dto.getClosedDays(),findUser);
         Shop createShop = shopRepository.save(shop);
         return new ShopResponseDto(createShop);
+    }
+
+    /**
+     * 가게 목록 조회
+     * @param shopName
+     * @return
+     */
+    @Override
+    public List<ShopResponseDto> findAllShops(String shopName) {
+        List<Shop> findShops = shopRepository.findAllByName(shopName);
+        if(findShops.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "가게를 찾을 수 없습니다");
+        }
+        return findShops.stream()
+                .map(ShopResponseDto::new)
+                .collect(Collectors.toList());
     }
 }
