@@ -30,12 +30,15 @@ public class User extends BaseEntity {
     public User() {
     }
 
-    public User(Long id, String email, String password, String grade, String name, String status) {
-        this.id = id;
+    public User(String email, String password, String grade, String name) {
         this.email = email;
         this.password = password;
         this.grade = grade;
         this.name = name;
+        this.status = "normal";
+    }
+
+    public void updateStatus(String status) {
         this.status = status;
     }
 }
