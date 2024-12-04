@@ -10,6 +10,6 @@ public interface MenuService {
 
     MenuResponseDto update(MenuUpdateRequestDto dto);
 
-    void delete(Long shopId, Long menuId);
+    void delete(Long shopId, Long menuId, Long sessionId);
 
 }

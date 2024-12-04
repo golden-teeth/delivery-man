@@ -23,8 +23,6 @@ public class MenuResponseDto {
         this.price = menu.getPrice();
         this.status = menu.getStatus();
         this.updateAt = menu.getUpdatedAt();
-
-        //todo 연관관계 매핑 후 진행
-//        this.shopId = menu.getId();
+        this.shopId = menu.getShop().getId();
     }
 }
