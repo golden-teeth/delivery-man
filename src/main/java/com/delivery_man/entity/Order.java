@@ -43,4 +43,8 @@ public class Order extends BaseEntity {
     public void updateUser(User user) {
         this.user = user;
     }
+
+    public void updateStatus( String status) {
+        this.status = status;
+    }
 }
