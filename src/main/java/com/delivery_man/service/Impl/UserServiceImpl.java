@@ -1,11 +1,13 @@
-package com.delivery_man.service;
+package com.delivery_man.service.Impl;
 
-import com.delivery_man.dto.UserLoginRequestDto;
-import com.delivery_man.dto.Authentication;
-import com.delivery_man.dto.UserSignUpRequestDto;
-import com.delivery_man.dto.UserSignUpResponseDto;
+import com.delivery_man.Exception.ApiException;
+import com.delivery_man.config.PasswordEncoder;
+import com.delivery_man.constant.UserErrorCode;
+import com.delivery_man.dto.*;
 import com.delivery_man.entity.User;
 import com.delivery_man.repository.UserRepository;
+import com.delivery_man.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -46,5 +48,24 @@ public class UserServiceImpl implements UserService {
         }
 
         return new Authentication(findUser.get().getId(),findUser.get().getEmail(), findUser.get().getGrade());
+    }
+
+    @Transactional
+    @Override
+    public void leaveUser(Long userId, UserLeaveRequestDto userLeaveRequestDto, HttpServletRequest request, Long sessionId) {
+
+        if (!userId.equals(sessionId)) {
+            throw new ApiException(UserErrorCode.INVALID_SESSION_ID);
+        }
+
+        User findUser = userRepository.findById(userId).orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
+
+        if (!PasswordEncoder.matches(userLeaveRequestDto.getPassword(), findUser.getPassword())) {
+            throw new ApiException(UserErrorCode.INVALID_PASSWORD);
+        }
+
+        findUser.updateStatus("leave");
+
+        userRepository.save(findUser);
     }
 }
