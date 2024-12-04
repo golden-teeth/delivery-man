@@ -1,4 +1,4 @@
-package com.delivery_man.enums;
+package com.delivery_man.constant;
 
 public enum ClosedDays {
     MON,

@@ -4,7 +4,7 @@ import com.delivery_man.dto.ShopCreateRequestDto;
 import com.delivery_man.dto.ShopResponseDto;
 import com.delivery_man.entity.Shop;
 import com.delivery_man.entity.User;
-import com.delivery_man.enums.ShopStatus;
+import com.delivery_man.constant.ShopStatus;
 import com.delivery_man.repository.ShopRepository;
 import com.delivery_man.repository.UserRepository;
 import com.delivery_man.service.ShopService;

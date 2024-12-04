@@ -1,7 +1,7 @@
 package com.delivery_man.dto;
 
-import com.delivery_man.enums.ClosedDays;
-import com.delivery_man.enums.ShopStatus;
+import com.delivery_man.constant.ClosedDays;
+import com.delivery_man.constant.ShopStatus;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
