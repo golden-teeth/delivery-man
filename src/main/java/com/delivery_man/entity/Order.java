@@ -1,12 +1,15 @@
 package com.delivery_man.entity;
 
+import com.delivery_man.dto.OrderCreateRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
 @Entity
 @Getter
+@NoArgsConstructor
 @Table(name = "orders")
 public class Order extends BaseEntity {
 
@@ -20,8 +23,28 @@ public class Order extends BaseEntity {
     @Column(nullable = false)
     private BigDecimal totalPrice;
 
-//    public Order(OrderCreateRequestDto dto, BigDecimal price) {
-//        this.status = "use";
-//        this.totalPrice = price;
-//    }
+    @OneToOne
+    @JoinColumn(name = "menu_id")
+    private Menu menu;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    public Order(OrderCreateRequestDto dto) {
+        this.status = "use";
+    }
+
+    public void updateMenu(Menu menu) {
+        this.menu = menu;
+        this.totalPrice = menu.getPrice();
+    }
+
+    public void updateUser(User user) {
+        this.user = user;
+    }
+
+    public void updateStatus( String status) {
+        this.status = status;
+    }
 }

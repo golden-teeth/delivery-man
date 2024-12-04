@@ -1,6 +1,6 @@
 package com.delivery_man.dto;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OrderCreateRequestDto {
 
-    @NotBlank
+    @NotNull
     private Long menuId;
 
     private Long userId;
