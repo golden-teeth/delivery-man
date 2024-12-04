@@ -1,6 +1,7 @@
 package com.delivery_man.entity;
 
 import com.delivery_man.dto.MenuCreateRequestDto;
+import com.delivery_man.dto.MenuUpdateRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,7 +37,9 @@ public class Menu extends BaseEntity {
 
     }
 
+
     public void delete() {
         this.status="delete";
     }
+
 }

@@ -2,6 +2,7 @@ package com.delivery_man.controller;
 
 import com.delivery_man.dto.MenuCreateRequestDto;
 import com.delivery_man.dto.MenuResponseDto;
+import com.delivery_man.dto.MenuUpdateRequestDto;
 import com.delivery_man.service.MenuService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -34,10 +35,12 @@ public class MenuController {
         return new ResponseEntity<>(responseDto,HttpStatus.OK);
     }
 
+
     @DeleteMapping("/{menuId}")
     public ResponseEntity<Void> delete(@PathVariable("shopId") Long shopId,
                                        @PathVariable("menuId")Long menuId){
         service.delete(shopId, menuId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
 }
