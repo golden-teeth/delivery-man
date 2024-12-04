@@ -57,4 +57,8 @@ public class Shop extends BaseEntity{
         this.closedDays = closedDays;
         this.user = user;
     }
+
+    public void updateStatus(ShopStatus status){
+        this.status = status;
+    }
 }

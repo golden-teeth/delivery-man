@@ -1,9 +1,7 @@
 package com.delivery_man.controller;
 
 import com.delivery_man.config.Const;
-import com.delivery_man.dto.ShopCreateRequestDto;
-import com.delivery_man.dto.ShopFindOneResponseDto;
-import com.delivery_man.dto.ShopResponseDto;
+import com.delivery_man.dto.*;
 import com.delivery_man.service.ShopService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -60,6 +58,16 @@ public class ShopController {
     ){
         ShopFindOneResponseDto shopFindOneResponseDto = shopService.findShop(shopId);
         return new ResponseEntity<>(shopFindOneResponseDto,HttpStatus.OK);
+    }
+
+
+    @PatchMapping("/{shopId}")
+    public ResponseEntity<ShopUpdateStatusResponseDto> updateShopStatus(
+            @PathVariable Long shopId,
+            @RequestBody ShopUpdateStatusRequestDto dto
+            ){
+        ShopUpdateStatusResponseDto shopUpdateStatusResponseDto = shopService.updateShopStatus(dto,shopId);
+        return new ResponseEntity<>(shopUpdateStatusResponseDto,HttpStatus.OK);
     }
 
 }
