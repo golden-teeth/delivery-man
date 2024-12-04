@@ -19,6 +19,12 @@ public class UserController {
 
     private final UserService userService;
 
+    /**
+     * 회원 가입 메서드
+     *
+     * @param userSignUpRequestDto 회원 가입 시 요청 정보
+     * @return
+     */
     @PostMapping("/signup")
     public ResponseEntity<UserSignUpResponseDto> creatUser(
             @RequestBody UserSignUpRequestDto userSignUpRequestDto
@@ -26,14 +32,23 @@ public class UserController {
         return ResponseEntity.ok().body(userService.signUpUser(userSignUpRequestDto));
     }
 
+    /**
+     * 회원 탈퇴 메서드
+     *
+     * @param userId              탈퇴 할 유저 식별자
+     * @param userLeaveRequestDto 탈퇴 시 요청 정보
+     * @param request
+     * @param authentication      session 정보
+     * @return
+     */
     @PatchMapping("/{userId}")
     public ResponseEntity<String> leaveUser(@PathVariable Long userId,
-                          @RequestBody UserLeaveRequestDto userLeaveRequestDto,
-                          HttpServletRequest request,
-                          @SessionAttribute(name = Const.SESSION_KEY) Authentication authentication
+                                            @RequestBody UserLeaveRequestDto userLeaveRequestDto,
+                                            HttpServletRequest request,
+                                            @SessionAttribute(name = Const.SESSION_KEY) Authentication authentication
     ) {
         Long sessionId = authentication.getId();
-        userService.leaveUser(userId,userLeaveRequestDto,request,sessionId);
+        userService.leaveUser(userId, userLeaveRequestDto, request, sessionId);
 
         return ResponseEntity.ok().body("정상적으로 삭제되었습니다.");
     }
