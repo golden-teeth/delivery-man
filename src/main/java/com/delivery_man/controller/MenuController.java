@@ -34,4 +34,13 @@ public class MenuController {
         MenuResponseDto responseDto = service.update(dto);
         return new ResponseEntity<>(responseDto,HttpStatus.OK);
     }
+
+
+    @DeleteMapping("/{menuId}")
+    public ResponseEntity<Void> delete(@PathVariable("shopId") Long shopId,
+                                       @PathVariable("menuId")Long menuId){
+        service.delete(shopId, menuId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }
