@@ -13,7 +13,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
 
-    private static final String[] OWNER_AUTH_REQUIRED_PATH_PATTERNS = {""};
+    private static final String[] OWNER_AUTH_REQUIRED_PATH_PATTERNS = {"/shops","/shops/*"};
     private static final String[] USER_AUTH_REQUIRED_PATH_PATTERNS = {""};
 
     private final UserAuthInterceptor userAuthInterceptor;
