@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -39,6 +41,9 @@ public class Shop extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(mappedBy="shop", cascade = CascadeType.REMOVE)
+    private final List<Menu> menus = new ArrayList<Menu>();
 
     public Shop() {
     }
