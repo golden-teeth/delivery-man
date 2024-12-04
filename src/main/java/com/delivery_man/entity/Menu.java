@@ -24,6 +24,10 @@ public class Menu extends BaseEntity {
     @Column(nullable = false)
     private String status;
 
+    @ManyToOne
+    @JoinColumn(name = "shop_id")
+    private Shop shop;
+
 
     public Menu(MenuCreateRequestDto dto) {
         this.name = dto.getName();
