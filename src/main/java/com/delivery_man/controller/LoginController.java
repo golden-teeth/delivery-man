@@ -31,4 +31,16 @@ public class LoginController {
 
         return ResponseEntity.ok(authentication);
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(HttpServletRequest request) {
+
+        HttpSession session = request.getSession(false);
+
+        if (session != null) {
+            session.invalidate();
+        }
+
+        return ResponseEntity.ok().body("정상적으로 로그아웃 되었습니다.");
+    }
 }
