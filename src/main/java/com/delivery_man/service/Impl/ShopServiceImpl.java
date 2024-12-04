@@ -1,9 +1,9 @@
 package com.delivery_man.service.impl;
 
-import com.delivery_man.dto.MenuResponseDto;
-import com.delivery_man.dto.ShopCreateRequestDto;
-import com.delivery_man.dto.ShopFindOneResponseDto;
-import com.delivery_man.dto.ShopResponseDto;
+import com.delivery_man.Exception.ApiException;
+import com.delivery_man.Exception.GlobalExceptionHandler;
+import com.delivery_man.constant.ShopErrorCode;
+import com.delivery_man.dto.*;
 import com.delivery_man.entity.Menu;
 import com.delivery_man.entity.Shop;
 import com.delivery_man.entity.User;
@@ -15,6 +15,7 @@ import com.delivery_man.service.ShopService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -90,6 +91,27 @@ public class ShopServiceImpl implements ShopService {
         return new ShopFindOneResponseDto(
                 shopResponseDto,
                 menus
+        );
+    }
+
+    /**
+     * 가게 상태 업데이트
+     * @param shopId
+     * @return
+     */
+    @Override
+    @Transactional
+    public ShopUpdateStatusResponseDto updateShopStatus(ShopUpdateStatusRequestDto dto,Long shopId) {
+        Shop findShop = shopRepository.findById(shopId)
+                .orElseThrow(() -> new ApiException(ShopErrorCode.SHOP_NOT_FOUND));
+
+        findShop.updateStatus(dto.getStatus());
+        Shop updateShop = shopRepository.save(findShop);
+        return new ShopUpdateStatusResponseDto(
+                updateShop.getId(),
+                updateShop.getName(),
+                updateShop.getStatus(),
+                updateShop.getUpdatedAt()
         );
     }
 }
