@@ -1,10 +1,14 @@
 package com.delivery_man.service.impl;
 
+import com.delivery_man.dto.MenuResponseDto;
 import com.delivery_man.dto.ShopCreateRequestDto;
+import com.delivery_man.dto.ShopFindOneResponseDto;
 import com.delivery_man.dto.ShopResponseDto;
+import com.delivery_man.entity.Menu;
 import com.delivery_man.entity.Shop;
 import com.delivery_man.entity.User;
 import com.delivery_man.constant.ShopStatus;
+import com.delivery_man.repository.MenuRepository;
 import com.delivery_man.repository.ShopRepository;
 import com.delivery_man.repository.UserRepository;
 import com.delivery_man.service.ShopService;
@@ -22,6 +26,7 @@ public class ShopServiceImpl implements ShopService {
 
     private final ShopRepository shopRepository;
     private final UserRepository userRepository;
+    private final MenuRepository menuRepository;
 
     /**
      * 가게 생성
@@ -63,5 +68,28 @@ public class ShopServiceImpl implements ShopService {
         return findShops.stream()
                 .map(ShopResponseDto::new)
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * 가게 상세 조회
+     * @param shopId
+     * @return
+     */
+    @Override
+    public ShopFindOneResponseDto findShop(Long shopId) {
+        Shop findShop = shopRepository.findById(shopId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        // 가게에 등록된 메뉴 조회
+        List<Menu> allMenus = menuRepository.findByShop(findShop);
+
+        // 조회한 메뉴를 목록으로 저장
+        List<MenuResponseDto> menus = allMenus.stream().map(MenuResponseDto::new).toList();
+
+        ShopResponseDto shopResponseDto = new ShopResponseDto(findShop);
+        return new ShopFindOneResponseDto(
+                shopResponseDto,
+                menus
+        );
     }
 }
