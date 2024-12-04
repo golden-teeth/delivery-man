@@ -2,13 +2,22 @@ package com.delivery_man.config;
 
 import com.delivery_man.filter.LoginFilter;
 import jakarta.servlet.Filter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
+@RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
+
+    private static final String[] OWNER_AUTH_REQUIRED_PATH_PATTERNS = {""};
+    private static final String[] USER_AUTH_REQUIRED_PATH_PATTERNS = {""};
+
+    private final UserAuthInterceptor userAuthInterceptor;
+    private final OwnerAuthInterceptor ownerAuthInterceptor;
 
     /**
      * 로그인 필터 등록
@@ -24,5 +33,16 @@ public class WebConfig implements WebMvcConfigurer {
         filterRegistrationBean.addUrlPatterns("/*");
 
         return filterRegistrationBean;
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(userAuthInterceptor)
+                .addPathPatterns(USER_AUTH_REQUIRED_PATH_PATTERNS)
+                .order(2);
+
+        registry.addInterceptor(ownerAuthInterceptor)
+                .addPathPatterns(OWNER_AUTH_REQUIRED_PATH_PATTERNS)
+                .order(3);
     }
 }
