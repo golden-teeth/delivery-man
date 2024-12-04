@@ -25,11 +25,10 @@ public class ShopController {
      */
     @PostMapping
     public ResponseEntity<ShopResponseDto> createShop(
-           @Valid @RequestBody ShopCreateRequestDto dto
-           //@SessionAttribute(name = Const.SESSION_KEY) Long sessionId
-
+           @Valid @RequestBody ShopCreateRequestDto dto,
+           @SessionAttribute(name = Const.SESSION_KEY) Authentication session
     ){
-        Long sessionId=1L;
+        Long sessionId = session.getId();
         ShopResponseDto shopResponseDto = shopService.createShop(dto, sessionId);
         return new ResponseEntity<>(shopResponseDto, HttpStatus.CREATED);
     }
