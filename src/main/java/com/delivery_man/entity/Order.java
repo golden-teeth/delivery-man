@@ -1,6 +1,5 @@
 package com.delivery_man.entity;
 
-import com.delivery_man.dto.OrderCreateRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -21,8 +20,8 @@ public class Order extends BaseEntity {
     @Column(nullable = false)
     private BigDecimal totalPrice;
 
-    public Order(OrderCreateRequestDto dto, BigDecimal price) {
-        this.status = "use";
-        this.totalPrice = price;
-    }
+//    public Order(OrderCreateRequestDto dto, BigDecimal price) {
+//        this.status = "use";
+//        this.totalPrice = price;
+//    }
 }
