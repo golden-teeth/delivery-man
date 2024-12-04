@@ -47,4 +47,7 @@ public class Menu extends BaseEntity {
         this.status="delete";
     }
 
+    public void updateShop(Shop shop) {
+        this.shop = shop;
+    }
 }

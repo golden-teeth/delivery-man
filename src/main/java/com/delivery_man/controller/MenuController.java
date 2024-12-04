@@ -1,5 +1,7 @@
 package com.delivery_man.controller;
 
+import com.delivery_man.config.Const;
+import com.delivery_man.dto.Authentication;
 import com.delivery_man.dto.MenuCreateRequestDto;
 import com.delivery_man.dto.MenuResponseDto;
 import com.delivery_man.dto.MenuUpdateRequestDto;
@@ -20,26 +22,30 @@ public class MenuController {
 
     @PostMapping
     public ResponseEntity<MenuResponseDto> create(@PathVariable("shopId") Long shopId,
-                                                  @Valid @RequestBody MenuCreateRequestDto dto){
-        dto.setIds(1L,shopId);
+                                                  @Valid @RequestBody MenuCreateRequestDto dto,
+                                                  @SessionAttribute(name = Const.SESSION_KEY)Authentication authentication
+                                                  ) {
+        dto.setIds(authentication.getId(), shopId);
         MenuResponseDto responseDto = service.create(dto);
-        return new ResponseEntity<>(responseDto,HttpStatus.OK);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     @PutMapping("/{menuId}")
-    public ResponseEntity<MenuResponseDto> update(@PathVariable("shopId")Long shopId,
-                                                  @PathVariable("menuId")Long menuId,
-                                                  @Valid @RequestBody MenuUpdateRequestDto dto){
-        dto.setIds(1L,shopId,menuId);
+    public ResponseEntity<MenuResponseDto> update(@PathVariable("shopId") Long shopId,
+                                                  @PathVariable("menuId") Long menuId,
+                                                  @Valid @RequestBody MenuUpdateRequestDto dto,
+                                                  @SessionAttribute(name = Const.SESSION_KEY)Authentication authentication) {
+        dto.setIds(authentication.getId(), shopId, menuId);
         MenuResponseDto responseDto = service.update(dto);
-        return new ResponseEntity<>(responseDto,HttpStatus.OK);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
 
     @DeleteMapping("/{menuId}")
     public ResponseEntity<Void> delete(@PathVariable("shopId") Long shopId,
-                                       @PathVariable("menuId")Long menuId){
-        service.delete(shopId, menuId);
+                                       @PathVariable("menuId") Long menuId,
+                                       @SessionAttribute(name = Const.SESSION_KEY)Authentication authentication) {
+        service.delete(shopId, menuId,authentication.getId());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
