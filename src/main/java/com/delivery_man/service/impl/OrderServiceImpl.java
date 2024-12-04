@@ -33,12 +33,13 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderResponseDto create(OrderCreateRequestDto dto) {
         //검증
-        //user 검증
-        User user = userRepository.findById(dto.getUserId())
-                .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
         // menu 검증
         Menu menu = menuRepository.findById(dto.getMenuId())
                 .orElseThrow(() -> new ApiException(MenuErrorCode.MENU_NOT_FOUND));
+        //user 검증
+        User user = userRepository.findById(dto.getUserId())
+                .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
+
 
         Order order = new Order(dto);
         order.updateMenu(menu);
