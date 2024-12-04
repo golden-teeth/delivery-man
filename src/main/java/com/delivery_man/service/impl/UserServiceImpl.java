@@ -1,4 +1,4 @@
-package com.delivery_man.service.Impl;
+package com.delivery_man.service.impl;
 
 import com.delivery_man.Exception.ApiException;
 import com.delivery_man.config.PasswordEncoder;
