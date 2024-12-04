@@ -20,8 +20,4 @@ public class Order extends BaseEntity {
     @Column(nullable = false)
     private BigDecimal totalPrice;
 
-//    public Order(OrderCreateRequestDto dto, BigDecimal price) {
-//        this.status = "use";
-//        this.totalPrice = price;
-//    }
 }
