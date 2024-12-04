@@ -1,6 +1,7 @@
 package com.delivery_man.entity;
 
 import com.delivery_man.dto.MenuCreateRequestDto;
+import com.delivery_man.dto.MenuUpdateRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,5 +29,11 @@ public class Menu extends BaseEntity {
         this.name = dto.getName();
         this.price = dto.getPrice();
         this.status="use";
+    }
+
+    public void update(MenuUpdateRequestDto dto) {
+        this.name = dto.getName();
+        this.price = dto.getPrice();
+
     }
 }

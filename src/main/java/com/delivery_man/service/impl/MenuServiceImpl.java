@@ -2,6 +2,7 @@ package com.delivery_man.service.impl;
 
 import com.delivery_man.dto.MenuCreateRequestDto;
 import com.delivery_man.dto.MenuResponseDto;
+import com.delivery_man.dto.MenuUpdateRequestDto;
 import com.delivery_man.entity.Menu;
 import com.delivery_man.repository.MenuRepository;
 import com.delivery_man.service.MenuService;
@@ -25,4 +26,31 @@ public class MenuServiceImpl implements MenuService {
         Menu savedMenu = repository.save(menu);
         return new MenuResponseDto(savedMenu);
     }
+
+    @Override
+    public MenuResponseDto update(MenuUpdateRequestDto dto) {
+        //검증
+        //dto 검증
+        validateUpdateDto(dto);
+        //shop id 검증
+        //user id 검증
+
+        //menu 검증
+        Menu findByMenuId = repository.findById(dto.getMenuId())
+                .orElseThrow(()->new RuntimeException());
+
+
+        findByMenuId.update(dto);
+
+        return new MenuResponseDto(findByMenuId);
+
+    }
+
+    private void validateUpdateDto(MenuUpdateRequestDto dto) {
+        if((dto.getName()==null && dto.getPrice()!=null) ||
+                (dto.getName()!=null && dto.getPrice()==null)){
+            throw new RuntimeException();
+        }
+    }
+
 }
