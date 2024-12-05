@@ -7,9 +7,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
+import java.util.List;
+
 @Repository
 public interface PointRepository extends JpaRepository<Point, Long> {
 
     @Transactional
     void deletePointByCreatedAtLessThan(LocalDateTime cutoffDateTime);
+
+    List<Point> findByUserId(Long userId);
 }

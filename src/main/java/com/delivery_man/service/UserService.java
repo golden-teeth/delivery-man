@@ -8,5 +8,7 @@ public interface UserService {
 
     Authentication login(UserLoginRequestDto userLoginRequestDto);
 
+    UserResponseDto findUser(Long userId, Long sessionId);
+
     void leaveUser(Long userId, UserLeaveRequestDto userLeaveRequestDto, HttpServletRequest request, Long sessionId);
 }
