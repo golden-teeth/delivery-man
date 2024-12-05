@@ -4,6 +4,9 @@ import com.delivery_man.config.PasswordEncoder;
 import jakarta.persistence.*;
 import lombok.Getter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Table(name = "user")
@@ -27,6 +30,9 @@ public class User extends CreateAndUpdateDateEntity {
 
     @Column(nullable = false, length = 10)
     private String status;
+
+    @OneToMany(mappedBy = "user")
+    private List<Order> orders=new ArrayList<>();
 
     public User() {
     }

@@ -37,8 +37,8 @@ public class Order extends CreateAndUpdateDateEntity {
     @JoinColumn(name = "shop_id")
     private Shop shop;
 
-    @OneToOne(mappedBy = "order")
-    private Cart cart;
+    @OneToMany(mappedBy = "order")
+    private List<OrderItem> orderItems= new ArrayList<>();
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<Review> review = new ArrayList<>();
