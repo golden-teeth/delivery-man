@@ -1,5 +1,6 @@
 package com.delivery_man.entity;
 
+import com.delivery_man.dto.CartCreateRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +20,21 @@ public class Cart extends CreateAndUpdateDateEntity{
     @JoinColumn(name = "menu_id")
     private Menu menu;
 
-    @OneToOne
-    @JoinColumn(name = "order_id")
-    private Order order;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+
+    public void updateByDto(CartCreateRequestDto dto) {
+        this.quantity = dto.getQuantity();
+    }
+
+    public void updateMenu(Menu menu) {
+        this.menu = menu;
+    }
+
+    public void updateUser(User user) {
+        this.user = user;
+
+    }
 }

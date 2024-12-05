@@ -2,7 +2,6 @@ package com.delivery_man.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import org.springframework.data.annotation.CreatedDate;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -24,7 +23,6 @@ public class Point extends CreateDateEntity{
 
     public void updatePoint(BigDecimal point, LocalDateTime createdAt, User user) {
         this.point = point;
-        this.createdAt = createdAt;
         this.user = user;
     }
 }
