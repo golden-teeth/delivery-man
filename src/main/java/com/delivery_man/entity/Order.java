@@ -4,7 +4,6 @@ import com.delivery_man.dto.OrderCreateRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -26,7 +25,7 @@ public class Order extends BaseEntity {
     @Column(nullable = false)
     private BigDecimal totalPrice;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "menu_id")
     private Menu menu;
 
