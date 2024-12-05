@@ -14,7 +14,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
 
     private static final String[] OWNER_AUTH_REQUIRED_PATH_PATTERNS = {"/shops", "/shops/*"};
-    private static final String[] USER_AUTH_REQUIRED_PATH_PATTERNS = {""};
+    private static final String[] USER_AUTH_REQUIRED_PATH_PATTERNS = {"/users/*/orders","/users/*/orders/*","/orders/*/reviews"};
 
     private final UserAuthInterceptor userAuthInterceptor;
     private final OwnerAuthInterceptor ownerAuthInterceptor;

@@ -53,9 +53,11 @@ public class ShopController {
      */
     @GetMapping("/{shopId}")
     public ResponseEntity<ShopFindOneResponseDto> findShop(
-            @PathVariable Long shopId
+            @PathVariable Long shopId,
+            @SessionAttribute(name = Const.SESSION_KEY) Authentication session
     ){
-        ShopFindOneResponseDto shopFindOneResponseDto = shopService.findShop(shopId);
+        Long sessionId = session.getId();
+        ShopFindOneResponseDto shopFindOneResponseDto = shopService.findShop(shopId, sessionId);
         return new ResponseEntity<>(shopFindOneResponseDto,HttpStatus.OK);
     }
 

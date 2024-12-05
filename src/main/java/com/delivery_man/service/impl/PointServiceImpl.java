@@ -43,7 +43,7 @@ public class PointServiceImpl implements PointService {
 
         //주문 조회
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new ApiException(OrderErrorCode.ORDER_NOT_FOUNT));
+                .orElseThrow(() -> new ApiException(OrderErrorCode.ORDER_NOT_FOUND));
 
         //주문이 배달이 완료된 경우
         if (Objects.equals(order.getStatus(), "done")) {
