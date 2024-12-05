@@ -52,7 +52,6 @@ public class ReviewServiceImpl implements ReviewService {
             throw new ApiException(ReviewErrorCode.REVIEW_NOT_CREATED);
         }
 
-        // 리뷰 생성 및 양방향 관계 설정
         Review review = new Review(dto.getContent(), dto.getRating(), findUser, findOrder);
         reviewRepository.save(review);
 

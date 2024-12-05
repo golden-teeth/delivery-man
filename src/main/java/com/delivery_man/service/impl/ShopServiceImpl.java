@@ -78,7 +78,7 @@ public class ShopServiceImpl implements ShopService {
      * @return
      */
     @Override
-    public ShopFindOneResponseDto findShop(Long shopId) {
+    public ShopFindOneResponseDto findShop(Long shopId, Long sessionId) {
         Shop findShop = shopRepository.findById(shopId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
@@ -86,23 +86,25 @@ public class ShopServiceImpl implements ShopService {
         List<Menu> allMenus = menuRepository.findByShop(findShop);
 
         // 조회한 메뉴를 목록으로 저장
-        List<MenuResponseDto> menus = allMenus.stream().map(MenuResponseDto::new).toList();
+        List<MenuResponseDto> menusDtos = allMenus.stream().map(MenuResponseDto::new).toList();
 
         // 가게와 연관된 리뷰 조회
         List<Order> allOrders = orderRepository.findByShopId(findShop.getId());
-        List<ReviewResponseDto> reviews = new ArrayList<>();
-        for(Order order : allOrders){
-            for(Review review : order.getReview()){
-                ReviewResponseDto reviewResponseDto = new ReviewResponseDto(review.getId(), review.getUser().getName(),review.getContent(),review.getRating());
-                reviews.add(reviewResponseDto);
-            }
+        List<Long> ordersIds = allOrders.stream()
+                .map(Order::getId)
+                .toList();
+        List<Review> allReviews = reviewRepository.findByOrderIdInAndUserIdNot(ordersIds, sessionId);
+        List<ReviewResponseDto> reviewDtos = new ArrayList<>();
+        for(Review review : allReviews){
+            ReviewResponseDto reviewResponseDto = new ReviewResponseDto(review.getId(), review.getUser().getName(),review.getContent(),review.getRating());
+            reviewDtos.add(reviewResponseDto);
         }
 
         ShopResponseDto shopResponseDto = new ShopResponseDto(findShop);
         return new ShopFindOneResponseDto(
                 shopResponseDto,
-                menus,
-                reviews
+                menusDtos,
+                reviewDtos
         );
     }
 
