@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Table
 @Getter
 @NoArgsConstructor
-public class Cart extends BaseEntity{
+public class Cart extends CreateAndUpdateDateEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
