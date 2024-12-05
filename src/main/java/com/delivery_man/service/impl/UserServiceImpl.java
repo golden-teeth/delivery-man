@@ -4,7 +4,9 @@ import com.delivery_man.Exception.ApiException;
 import com.delivery_man.config.PasswordEncoder;
 import com.delivery_man.constant.UserErrorCode;
 import com.delivery_man.dto.*;
+import com.delivery_man.entity.Point;
 import com.delivery_man.entity.User;
+import com.delivery_man.repository.PointRepository;
 import com.delivery_man.repository.UserRepository;
 import com.delivery_man.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,6 +14,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -19,6 +24,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PointRepository pointRepository;
 
     /**
      * 회원 가입 로직
@@ -65,6 +71,35 @@ public class UserServiceImpl implements UserService {
         }
 
         return new Authentication(findUser.get().getId(), findUser.get().getEmail(), findUser.get().getGrade());
+    }
+
+    /**
+     * 회원 조회 로직
+     *
+     * @param userId 유저 식별자
+     * @return 회원 정보와 포인트 합
+     */
+    @Override
+    public UserResponseDto findUser(Long userId, Long sessionId) {
+
+        //유저 식별자로 조회
+        User findUser = userRepository.findById(userId).orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
+
+        //조회하는 유저와 일치하지 않는 경우
+        if (!(Objects.equals(sessionId, findUser.getId()))) {
+            throw new ApiException(UserErrorCode.INVALID_SESSION_ID);
+        }
+
+        //포인트 조회
+        List<Point> findAllPoint = pointRepository.findByUserId(userId);
+
+        BigDecimal totalPoints = BigDecimal.ZERO;
+
+        //포인트 총합 계산
+        for (Point point : findAllPoint) {
+            totalPoints = totalPoints.add(point.getPoint());
+        }
+        return new UserResponseDto(findUser, totalPoints);
     }
 
     /**
