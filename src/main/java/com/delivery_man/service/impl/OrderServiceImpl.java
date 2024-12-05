@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -40,10 +41,12 @@ public class OrderServiceImpl implements OrderService {
         User user = userRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
 
+        Optional<Shop> shop = shopRepository.findById(menu.getShop().getId());
 
         Order order = new Order(dto);
         order.updateMenu(menu);
         order.updateUser(user);
+        order.updateShop(shop.get());
 
         orderRepository.save(order);
         return new OrderResponseDto(order);
@@ -69,7 +72,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         Order order = orderRepository.findById(dto.getOrderId())
-                .orElseThrow(() -> new ApiException(OrderErrorCode.ORDER_NOT_FOUNT));
+                .orElseThrow(() -> new ApiException(OrderErrorCode.ORDER_NOT_FOUND));
 
         order.updateStatus(dto.getStatus());
 

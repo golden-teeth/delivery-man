@@ -4,8 +4,11 @@ import com.delivery_man.dto.OrderCreateRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -31,6 +34,14 @@ public class Order extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "shop_id")
+    private Shop shop;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private final List<Review> review = new ArrayList<>();
+
+
     public Order(OrderCreateRequestDto dto) {
         this.status = "use";
     }
@@ -47,4 +58,7 @@ public class Order extends BaseEntity {
     public void updateStatus( String status) {
         this.status = status;
     }
+
+    public void updateShop(Shop shop){this.shop = shop;}
+
 }

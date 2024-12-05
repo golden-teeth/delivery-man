@@ -11,4 +11,5 @@ import java.util.List;
 public class ShopFindOneResponseDto {
     private final ShopResponseDto shop;
     private final List<MenuResponseDto> menus;
+    private final List<ReviewResponseDto> reviews;
 }
