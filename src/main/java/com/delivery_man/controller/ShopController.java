@@ -40,9 +40,11 @@ public class ShopController {
      */
     @GetMapping
     public ResponseEntity<List<ShopResponseDto>> findAllShops(
-            @RequestParam String shopName
+            @RequestParam String shopName,
+            @SessionAttribute(name = Const.SESSION_KEY) Authentication session
     ){
-        List<ShopResponseDto> shopResponseDtos = shopService.findAllShops(shopName);
+        Long sessionId = session.getId();
+        List<ShopResponseDto> shopResponseDtos = shopService.findAllShops(shopName,sessionId);
         return new ResponseEntity<>(shopResponseDtos,HttpStatus.OK);
     }
 

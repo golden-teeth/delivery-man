@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Getter
 public class ShopCreateRequestDto {
@@ -27,9 +28,9 @@ public class ShopCreateRequestDto {
     private final String closeAt;
 
     @NotNull(message = "휴무일을 입력해주세요")
-    private final ClosedDays closedDays;
-
-    public ShopCreateRequestDto(String name, BigDecimal minimumPrice, ShopStatus status, String openAt, String closeAt, ClosedDays closedDays) {
+    private final List<String> closedDays;
+    
+    public ShopCreateRequestDto(String name, BigDecimal minimumPrice, ShopStatus status, String openAt, String closeAt, List<String> closedDays) {
         this.name = name;
         this.minimumPrice = minimumPrice;
         this.status = status;

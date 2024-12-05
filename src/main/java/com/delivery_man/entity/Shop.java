@@ -34,9 +34,7 @@ public class Shop extends BaseEntity{
     @Column(nullable = false)
     private String closeAt;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private ClosedDays closedDays;
+    private String closedDays;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -51,13 +49,13 @@ public class Shop extends BaseEntity{
     public Shop() {
     }
 
-    public Shop(String name, BigDecimal minimumPrice, ShopStatus status, String openAt, String closeAt, ClosedDays closedDays, User user) {
+    public Shop(String name, BigDecimal minimumPrice, ShopStatus status, String openAt, String closeAt, List<String> closedDays, User user) {
         this.name = name;
         this.minimumPrice = minimumPrice;
         this.status = status;
         this.openAt = openAt;
         this.closeAt = closeAt;
-        this.closedDays = closedDays;
+        this.closedDays = String.join(",",closedDays);
         this.user = user;
     }
 
