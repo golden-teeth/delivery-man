@@ -31,6 +31,11 @@ public class UserAuthInterceptor implements HandlerInterceptor {
             throw new RuntimeException("session is null");
         }
 
+        //검증 대상인지 확인
+        if (!"POST".equalsIgnoreCase(request.getMethod())) {
+            return true;
+        }
+
         //session 으로 객체 생성
         Authentication authentication = (Authentication) session.getAttribute(Const.SESSION_KEY);
 
