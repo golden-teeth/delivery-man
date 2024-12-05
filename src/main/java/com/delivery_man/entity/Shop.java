@@ -1,6 +1,5 @@
 package com.delivery_man.entity;
 
-import com.delivery_man.constant.ClosedDays;
 import com.delivery_man.constant.ShopStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -12,7 +11,7 @@ import java.util.List;
 @Entity
 @Getter
 @Table(name = "shop")
-public class Shop extends BaseEntity{
+public class Shop extends CreateAndUpdateDateEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
