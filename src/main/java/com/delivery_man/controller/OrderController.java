@@ -6,6 +6,7 @@ import com.delivery_man.dto.OrderCreateRequestDto;
 import com.delivery_man.dto.OrderResponseDto;
 import com.delivery_man.dto.OrderUpdateRequestDto;
 import com.delivery_man.service.OrderService;
+import com.delivery_man.service.PointService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class OrderController {
 
     private final OrderService orderService;
+    private final PointService pointService;
 
     @PostMapping("/users/{userId}/orders")
     public ResponseEntity<OrderResponseDto> create(@PathVariable Long userId,
@@ -34,6 +36,9 @@ public class OrderController {
                                                    @Valid @RequestBody OrderUpdateRequestDto dto) {
         dto.updateIds(orderId, authentication.getId());
         OrderResponseDto responseDto = orderService.update(dto);
+
+        //포인트 서비스 호출
+        pointService.createPoint(orderId, responseDto);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
 
     }
