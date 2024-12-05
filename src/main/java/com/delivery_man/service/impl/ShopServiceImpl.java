@@ -1,14 +1,16 @@
 package com.delivery_man.service.impl;
 
 import com.delivery_man.Exception.ApiException;
-import com.delivery_man.Exception.GlobalExceptionHandler;
+import com.delivery_man.constant.ReviewFilterType;
 import com.delivery_man.constant.ShopErrorCode;
+import com.delivery_man.constant.UserErrorCode;
 import com.delivery_man.dto.*;
 import com.delivery_man.entity.*;
 import com.delivery_man.constant.ShopStatus;
 import com.delivery_man.repository.*;
 import com.delivery_man.service.ShopService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +40,7 @@ public class ShopServiceImpl implements ShopService {
     @Override
     public ShopResponseDto createShop(ShopCreateRequestDto dto, Long sessionId) {
         User findUser = userRepository.findById(sessionId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"해당 유저를 찾을 수 없습니다."));
+                .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
         List<Shop> findShops = shopRepository.findAllByUserId(sessionId);
         int cnt = 0;
         for (Shop findShop : findShops) {
@@ -61,10 +63,19 @@ public class ShopServiceImpl implements ShopService {
      * @return
      */
     @Override
-    public List<ShopResponseDto> findAllShops(String shopName) {
-        List<Shop> findShops = shopRepository.findAllByName(shopName);
+    public List<ShopResponseDto> findAllShops(String shopName, Long sessionId) {
+        User findUser = userRepository.findById(sessionId)
+                .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
+
+        List<Shop> findShops = new ArrayList<>();
+        if("owner".equals(findUser.getGrade())){
+            findShops = shopRepository.findAllByName(shopName);
+        }else if("user".equals(findUser.getGrade())){
+            findShops = shopRepository.findAllByNameAndStatus(shopName,ShopStatus.OPEN);
+        }
+
         if(findShops.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "가게를 찾을 수 없습니다");
+            throw new ApiException(ShopErrorCode.SHOP_NOT_FOUND);
         }
         return findShops.stream()
                 .map(ShopResponseDto::new)
@@ -78,29 +89,46 @@ public class ShopServiceImpl implements ShopService {
      * @return
      */
     @Override
-    public ShopFindOneResponseDto findShop(Long shopId, Long sessionId) {
-        Shop findShop = shopRepository.findById(shopId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    public ShopFindOneResponseDto findShop(String sortType, int page, int size, int ratingMin, int ratingMax, Long shopId, Long sessionId) {
+        User findUser = userRepository.findById(sessionId)
+                .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
+
+        Optional<Shop> findShop = Optional.empty();
+        if("owner".equals(findUser.getGrade())){
+            findShop = shopRepository.findById(shopId);
+        }else if("user".equals(findUser.getGrade())){
+            findShop = shopRepository.findShopByIdAndStatus(shopId, ShopStatus.OPEN);
+        }
+
+        if(findShop.isEmpty()){
+            throw new ApiException(ShopErrorCode.SHOP_NOT_FOUND);
+        }
 
         // 가게에 등록된 메뉴 조회
-        List<Menu> allMenus = menuRepository.findByShop(findShop);
+        List<Menu> allMenus = menuRepository.findByShop(findShop.get());
 
         // 조회한 메뉴를 목록으로 저장
         List<MenuResponseDto> menusDtos = allMenus.stream().map(MenuResponseDto::new).toList();
 
         // 가게와 연관된 리뷰 조회
-        List<Order> allOrders = orderRepository.findByShopId(findShop.getId());
+        List<Order> allOrders = orderRepository.findByShopId(findShop.get().getId());
         List<Long> ordersIds = allOrders.stream()
                 .map(Order::getId)
                 .toList();
-        List<Review> allReviews = reviewRepository.findByOrderIdInAndUserIdNot(ordersIds, sessionId);
+
+        // Sort
+        ReviewFilterType filterType = ReviewFilterType.valueOf(sortType.toUpperCase());
+        Pageable pageable = filterType.createPageable(page,size);
+
+        List<Review> allReviews = filterType.filterReviews(reviewRepository, ordersIds, sessionId, ratingMin, ratingMax, pageable);
+
         List<ReviewResponseDto> reviewDtos = new ArrayList<>();
         for(Review review : allReviews){
             ReviewResponseDto reviewResponseDto = new ReviewResponseDto(review.getId(), review.getUser().getName(),review.getContent(),review.getRating());
             reviewDtos.add(reviewResponseDto);
         }
 
-        ShopResponseDto shopResponseDto = new ShopResponseDto(findShop);
+        ShopResponseDto shopResponseDto = new ShopResponseDto(findShop.get());
         return new ShopFindOneResponseDto(
                 shopResponseDto,
                 menusDtos,
