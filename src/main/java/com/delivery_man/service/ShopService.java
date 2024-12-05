@@ -10,7 +10,7 @@ public interface ShopService {
 
     List<ShopResponseDto> findAllShops(String shopName);
 
-    ShopFindOneResponseDto findShop(Long shopId);
+    ShopFindOneResponseDto findShop(Long shopId, Long sessionId);
 
     ShopUpdateStatusResponseDto updateShopStatus(ShopUpdateStatusRequestDto dto, Long shopId);
 }

@@ -4,13 +4,9 @@ import com.delivery_man.Exception.ApiException;
 import com.delivery_man.Exception.GlobalExceptionHandler;
 import com.delivery_man.constant.ShopErrorCode;
 import com.delivery_man.dto.*;
-import com.delivery_man.entity.Menu;
-import com.delivery_man.entity.Shop;
-import com.delivery_man.entity.User;
+import com.delivery_man.entity.*;
 import com.delivery_man.constant.ShopStatus;
-import com.delivery_man.repository.MenuRepository;
-import com.delivery_man.repository.ShopRepository;
-import com.delivery_man.repository.UserRepository;
+import com.delivery_man.repository.*;
 import com.delivery_man.service.ShopService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,7 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,6 +26,8 @@ public class ShopServiceImpl implements ShopService {
     private final ShopRepository shopRepository;
     private final UserRepository userRepository;
     private final MenuRepository menuRepository;
+    private final ReviewRepository reviewRepository;
+    private final OrderRepository orderRepository;
 
     /**
      * 가게 생성
@@ -69,6 +69,7 @@ public class ShopServiceImpl implements ShopService {
         return findShops.stream()
                 .map(ShopResponseDto::new)
                 .collect(Collectors.toList());
+
     }
 
     /**
@@ -77,7 +78,7 @@ public class ShopServiceImpl implements ShopService {
      * @return
      */
     @Override
-    public ShopFindOneResponseDto findShop(Long shopId) {
+    public ShopFindOneResponseDto findShop(Long shopId, Long sessionId) {
         Shop findShop = shopRepository.findById(shopId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
@@ -85,12 +86,25 @@ public class ShopServiceImpl implements ShopService {
         List<Menu> allMenus = menuRepository.findByShop(findShop);
 
         // 조회한 메뉴를 목록으로 저장
-        List<MenuResponseDto> menus = allMenus.stream().map(MenuResponseDto::new).toList();
+        List<MenuResponseDto> menusDtos = allMenus.stream().map(MenuResponseDto::new).toList();
+
+        // 가게와 연관된 리뷰 조회
+        List<Order> allOrders = orderRepository.findByShopId(findShop.getId());
+        List<Long> ordersIds = allOrders.stream()
+                .map(Order::getId)
+                .toList();
+        List<Review> allReviews = reviewRepository.findByOrderIdInAndUserIdNot(ordersIds, sessionId);
+        List<ReviewResponseDto> reviewDtos = new ArrayList<>();
+        for(Review review : allReviews){
+            ReviewResponseDto reviewResponseDto = new ReviewResponseDto(review.getId(), review.getUser().getName(),review.getContent(),review.getRating());
+            reviewDtos.add(reviewResponseDto);
+        }
 
         ShopResponseDto shopResponseDto = new ShopResponseDto(findShop);
         return new ShopFindOneResponseDto(
                 shopResponseDto,
-                menus
+                menusDtos,
+                reviewDtos
         );
     }
 
