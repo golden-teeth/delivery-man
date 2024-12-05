@@ -7,17 +7,17 @@ import com.delivery_man.constant.UserErrorCode;
 import com.delivery_man.dto.OrderCreateRequestDto;
 import com.delivery_man.dto.OrderResponseDto;
 import com.delivery_man.dto.OrderUpdateRequestDto;
-import com.delivery_man.entity.*;
+import com.delivery_man.entity.Menu;
+import com.delivery_man.entity.Order;
+import com.delivery_man.entity.Shop;
+import com.delivery_man.entity.User;
 import com.delivery_man.repository.*;
 import com.delivery_man.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @Transactional
@@ -27,7 +27,6 @@ public class OrderServiceImpl implements OrderService {
     private final MenuRepository menuRepository;
     private final ShopRepository shopRepository;
     private final UserRepository userRepository;
-    private final PointRepository pointRepository;
     @Override
     public OrderResponseDto create(OrderCreateRequestDto dto) {
         //검증
@@ -69,14 +68,6 @@ public class OrderServiceImpl implements OrderService {
                 .orElseThrow(() -> new ApiException(OrderErrorCode.ORDER_NOT_FOUNT));
 
         order.updateStatus(dto.getStatus());
-
-        //포인트 생성 로직
-        if (Objects.equals(order.getStatus(), "done")) {
-            BigDecimal totalPoint = order.getTotalPrice().multiply(BigDecimal.valueOf(0.03));
-            Point point = new Point();
-            point.updatePoint(totalPoint, LocalDateTime.now(), user);
-            pointRepository.save(point);
-        }
 
         return new OrderResponseDto(order);
     }
