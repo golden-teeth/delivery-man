@@ -11,9 +11,16 @@ import java.io.IOException;
 
 public class LoginFilter implements Filter {
 
+    //로그인 필터 화이트 리스트
     private static final String[] WHITE_LIST = {"/", "/users/signup", "/users/login"};
 
-
+    /**
+     * @param request
+     * @param response
+     * @param chain
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
@@ -32,6 +39,7 @@ public class LoginFilter implements Filter {
         chain.doFilter(request, response);
     }
 
+    //화이트 리스트 검증 메서드
     private boolean isWhiteList(String requestURI) {
         return PatternMatchUtils.simpleMatch(WHITE_LIST, requestURI);
     }
