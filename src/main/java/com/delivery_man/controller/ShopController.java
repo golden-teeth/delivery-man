@@ -56,10 +56,15 @@ public class ShopController {
     @GetMapping("/{shopId}")
     public ResponseEntity<ShopFindOneResponseDto> findShop(
             @PathVariable Long shopId,
+            @RequestParam(required = false, defaultValue = "CREATE") String sort,
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "10") int size,
+            @RequestParam(required = false, defaultValue = "1") int ratingMin,
+            @RequestParam(required = false, defaultValue = "5") int ratingMax,
             @SessionAttribute(name = Const.SESSION_KEY) Authentication session
     ){
         Long sessionId = session.getId();
-        ShopFindOneResponseDto shopFindOneResponseDto = shopService.findShop(shopId, sessionId);
+        ShopFindOneResponseDto shopFindOneResponseDto = shopService.findShop(sort, page, size, ratingMin, ratingMax, shopId, sessionId);
         return new ResponseEntity<>(shopFindOneResponseDto,HttpStatus.OK);
     }
 

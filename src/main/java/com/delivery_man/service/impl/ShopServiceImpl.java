@@ -1,7 +1,7 @@
 package com.delivery_man.service.impl;
 
 import com.delivery_man.Exception.ApiException;
-import com.delivery_man.Exception.GlobalExceptionHandler;
+import com.delivery_man.constant.ReviewFilterType;
 import com.delivery_man.constant.ShopErrorCode;
 import com.delivery_man.constant.UserErrorCode;
 import com.delivery_man.dto.*;
@@ -10,13 +10,13 @@ import com.delivery_man.constant.ShopStatus;
 import com.delivery_man.repository.*;
 import com.delivery_man.service.ShopService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -89,7 +89,7 @@ public class ShopServiceImpl implements ShopService {
      * @return
      */
     @Override
-    public ShopFindOneResponseDto findShop(Long shopId, Long sessionId) {
+    public ShopFindOneResponseDto findShop(String sortType, int page, int size, int ratingMin, int ratingMax, Long shopId, Long sessionId) {
         User findUser = userRepository.findById(sessionId)
                 .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
 
@@ -115,7 +115,13 @@ public class ShopServiceImpl implements ShopService {
         List<Long> ordersIds = allOrders.stream()
                 .map(Order::getId)
                 .toList();
-        List<Review> allReviews = reviewRepository.findByOrderIdInAndUserIdNot(ordersIds, sessionId);
+
+        // Sort
+        ReviewFilterType filterType = ReviewFilterType.valueOf(sortType.toUpperCase());
+        Pageable pageable = filterType.createPageable(page,size);
+
+        List<Review> allReviews = filterType.filterReviews(reviewRepository, ordersIds, sessionId, ratingMin, ratingMax, pageable);
+
         List<ReviewResponseDto> reviewDtos = new ArrayList<>();
         for(Review review : allReviews){
             ReviewResponseDto reviewResponseDto = new ReviewResponseDto(review.getId(), review.getUser().getName(),review.getContent(),review.getRating());
