@@ -8,7 +8,7 @@ import java.util.List;
 public interface ShopService {
     ShopResponseDto createShop(ShopCreateRequestDto dto, Long sessionId) ;
 
-    List<ShopResponseDto> findAllShops(String shopName);
+    List<ShopResponseDto> findAllShops(String shopName, Long sessionId);
 
     ShopFindOneResponseDto findShop(Long shopId, Long sessionId);
 

@@ -7,6 +7,8 @@ import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
 
 @Getter
 public class ShopResponseDto {
@@ -22,13 +24,13 @@ public class ShopResponseDto {
 
     private final String closeAt;
 
-    private final ClosedDays closedDays;
+    private final List<String> closedDays;
 
     private final LocalDateTime updatedAt;
 
     private final Long userId;
 
-    public ShopResponseDto(Long id, String name, BigDecimal minimumPrice, ShopStatus status, String openAt, String closeAt, ClosedDays closedDays, LocalDateTime updatedAt, Long userId) {
+    public ShopResponseDto(Long id, String name, BigDecimal minimumPrice, ShopStatus status, String openAt, String closeAt, List<String> closedDays, LocalDateTime updatedAt, Long userId) {
         this.id = id;
         this.name = name;
         this.minimumPrice = minimumPrice;
@@ -47,7 +49,7 @@ public class ShopResponseDto {
         this.status = shop.getStatus();
         this.openAt = shop.getOpenAt();
         this.closeAt = shop.getCloseAt();
-        this.closedDays = shop.getClosedDays();
+        this.closedDays = Collections.singletonList(shop.getClosedDays());
         this.updatedAt = shop.getUpdatedAt();
         this.userId = shop.getUser().getId();
     }
