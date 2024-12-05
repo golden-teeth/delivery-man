@@ -14,7 +14,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Table(name = "menu")
-public class Menu extends BaseEntity {
+public class Menu extends CreateAndUpdateDateEntity {
     @Id
     @Column(name = "menu_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

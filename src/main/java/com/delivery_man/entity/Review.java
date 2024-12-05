@@ -2,17 +2,13 @@ package com.delivery_man.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import org.hibernate.mapping.ToOne;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Table(name="review")
 @EntityListeners(AuditingEntityListener.class)
-public class Review {
+public class Review extends CreateDateEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,9 +19,6 @@ public class Review {
     @Column(nullable = false)
     private int rating;
 
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime createdAt;
 
     @ManyToOne
     @JoinColumn(name="user_id")

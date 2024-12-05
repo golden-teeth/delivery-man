@@ -10,17 +10,13 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Table(name = "point")
-public class Point {
+public class Point extends CreateDateEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private BigDecimal point;
-
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime createdAt;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

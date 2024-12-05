@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Table(name = "orders")
-public class Order extends BaseEntity {
+public class Order extends CreateAndUpdateDateEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
