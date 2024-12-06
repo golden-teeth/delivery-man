@@ -1,6 +1,6 @@
 package com.delivery_man.dto;
 
-import com.delivery_man.entity.Cart;
+import com.delivery_man.entity.Menu;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,8 +11,8 @@ public class CartMenuResponseDto {
     private Long menuId;
     private int quantity;
 
-    public CartMenuResponseDto(Cart cart) {
-        this.menuId = cart.getMenu().getId();
-        this.quantity = cart.getQuantity();
+    public CartMenuResponseDto(Menu menu, int quantity) {
+        this.menuId = menu.getId();
+        this.quantity = quantity;
     }
 }
