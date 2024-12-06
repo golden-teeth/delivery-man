@@ -21,7 +21,7 @@ public class Point extends CreateDateEntity{
     @JoinColumn(name = "user_id")
     private User user;
 
-    public void updatePoint(BigDecimal point, LocalDateTime createdAt, User user) {
+    public void updatePoint(BigDecimal point, User user) {
         this.point = point;
         this.user = user;
     }
