@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @Table(name = "advertisement")
 @EntityListeners(AuditingEntityListener.class)
-public class Advertisement extends CreateDateEntity{
+public class Advertisement extends CreateAndUpdateDateEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,9 +28,19 @@ public class Advertisement extends CreateDateEntity{
 
     private Long adminId;
 
+    @CreatedDate
+    @Column(updatable = false)
+    private LocalDateTime appliedAt;
+
     @ManyToOne
     @JoinColumn(name = "shop_id")
     private Shop shop;
+
+    public void applyAd(String status, String rejectReason, Long adminId) {
+        this.status = status;
+        this.rejectReason = rejectReason;
+        this.adminId = adminId;
+    }
 
     public Advertisement(BigDecimal bid, Shop shop) {
         this.bid = bid;
