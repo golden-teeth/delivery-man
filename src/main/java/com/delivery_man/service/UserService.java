@@ -1,10 +1,11 @@
 package com.delivery_man.service;
 
 import com.delivery_man.dto.*;
+import com.delivery_man.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
 
 public interface UserService {
-    UserSignUpResponseDto signUpUser(UserSignUpRequestDto userSignUpRequestDto);
+    User signUpUser(UserSignUpRequestDto userSignUpRequestDto);
 
     Authentication login(UserLoginRequestDto userLoginRequestDto);
 

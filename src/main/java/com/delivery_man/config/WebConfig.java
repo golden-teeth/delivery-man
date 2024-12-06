@@ -36,7 +36,7 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     /**
-     * 인터셈터 등록
+     * 인터셉터 등록
      *
      * @param registry
      */

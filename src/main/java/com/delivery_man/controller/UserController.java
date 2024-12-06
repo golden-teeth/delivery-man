@@ -2,12 +2,17 @@ package com.delivery_man.controller;
 
 import com.delivery_man.config.Const;
 import com.delivery_man.dto.*;
+import com.delivery_man.entity.User;
+import com.delivery_man.service.PictureService;
 import com.delivery_man.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/users")
@@ -15,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+    private final PictureService pictureService;
 
     /**
      * 회원 가입 메서드
@@ -24,9 +30,14 @@ public class UserController {
      */
     @PostMapping("/signup")
     public ResponseEntity<UserSignUpResponseDto> creatUser(
-            @RequestBody UserSignUpRequestDto userSignUpRequestDto
-    ) {
-        return ResponseEntity.ok().body(userService.signUpUser(userSignUpRequestDto));
+            @RequestPart("request") UserSignUpRequestDto userSignUpRequestDto,
+            @RequestPart(value = "images", required = false) List<MultipartFile> images
+            ) {
+        User savedUser = userService.signUpUser(userSignUpRequestDto);
+
+        pictureService.uploadPicture(savedUser, images);
+
+        return ResponseEntity.ok().body(new UserSignUpResponseDto(savedUser));
     }
 
     /**

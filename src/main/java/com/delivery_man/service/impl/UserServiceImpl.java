@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
      */
     @Transactional
     @Override
-    public UserSignUpResponseDto signUpUser(UserSignUpRequestDto userSignUpRequestDto) {
+    public User signUpUser(UserSignUpRequestDto userSignUpRequestDto) {
 
         //이메일로 유저 조회
         Optional<User> findUser = userRepository.findByEmail(userSignUpRequestDto.getEmail());
@@ -45,9 +45,7 @@ public class UserServiceImpl implements UserService {
         }
 
         //repository 에 저장
-        User savedUser = userRepository.save(userSignUpRequestDto.toEntity());
-
-        return new UserSignUpResponseDto(savedUser);
+        return userRepository.save(userSignUpRequestDto.toEntity());
     }
 
     /**
