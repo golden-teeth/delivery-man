@@ -7,6 +7,7 @@ import com.delivery_man.constant.ShopErrorCode;
 import com.delivery_man.constant.UserErrorCode;
 import com.delivery_man.dto.CartCreateRequestDto;
 import com.delivery_man.dto.CartResponseDto;
+import com.delivery_man.dto.UserValidDto;
 import com.delivery_man.entity.Cart;
 import com.delivery_man.entity.Menu;
 import com.delivery_man.entity.Shop;
@@ -78,6 +79,24 @@ public class CartServiceImpl implements CartService {
         }
 
 
+        return new CartResponseDto(cartList);
+    }
+
+    @Override
+    public CartResponseDto deleteByMenuId(UserValidDto userValidDto, Long menuId) {
+        //검증
+        validateSessionAndUser(userValidDto.getSessionId(), userValidDto.getUserId());
+        //user 검증
+        User user = userRepository.findById(userValidDto.getUserId())
+                .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
+
+        Cart cart = cartRepository.findByUserIdAndMenuId(user.getId(), menuId)
+                .orElseThrow(() -> new ApiException(CartErrorCode.CART_NOT_FOUND));
+
+        cartRepository.delete(cart);
+
+
+        List<Cart> cartList = cartRepository.findByUserId(user.getId());
         return new CartResponseDto(cartList);
     }
 
