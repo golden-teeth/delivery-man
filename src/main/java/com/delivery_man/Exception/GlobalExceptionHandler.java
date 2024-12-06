@@ -2,6 +2,7 @@ package com.delivery_man.Exception;
 
 import com.delivery_man.constant.CommonErrorCode;
 import com.delivery_man.constant.ErrorCode;
+import com.delivery_man.constant.SessionErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -29,6 +30,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleIllegalArgument(IllegalArgumentException e) {
         log.warn("handleIllegalArgument", e);
         ErrorCode errorCode = CommonErrorCode.INVALID_PARAMETER;
+        return handleExceptionInternal(errorCode, errorCode.getMessage());
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<Object> handleIRuntime(RuntimeException e) {
+        log.warn("handleIRuntime", e);
+        ErrorCode errorCode = SessionErrorCode.NO_SESSION;
         return handleExceptionInternal(errorCode, errorCode.getMessage());
     }
 

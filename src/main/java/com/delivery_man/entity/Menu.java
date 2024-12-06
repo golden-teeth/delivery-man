@@ -7,8 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Entity
@@ -31,8 +29,6 @@ public class Menu extends CreateAndUpdateDateEntity {
     @JoinColumn(name = "shop_id")
     private Shop shop;
 
-    @OneToMany
-    private List<Order> orders = new ArrayList<>();
 
     public Menu(MenuCreateRequestDto dto) {
         this.name = dto.getName();

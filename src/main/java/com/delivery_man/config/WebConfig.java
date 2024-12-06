@@ -13,11 +13,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
 
+    private static final String[] ADMIN_AUTH_REQUIRED_PATH_PATTERNS = {"/advertisement/*/*/apply"};
     private static final String[] OWNER_AUTH_REQUIRED_PATH_PATTERNS = {"/shops", "/shops/*","/advertisement/*"};
     private static final String[] USER_AUTH_REQUIRED_PATH_PATTERNS = {"/users/*/orders","/users/*/orders/*","/orders/*/reviews"};
 
+    private final AdminAuthInterceptor adminAuthInterceptor;
     private final UserAuthInterceptor userAuthInterceptor;
     private final OwnerAuthInterceptor ownerAuthInterceptor;
+
 
     /**
      * 로그인 필터 등록
@@ -42,12 +45,18 @@ public class WebConfig implements WebMvcConfigurer {
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(adminAuthInterceptor)
+                .addPathPatterns(ADMIN_AUTH_REQUIRED_PATH_PATTERNS)
+                .order(2);
+
         registry.addInterceptor(userAuthInterceptor)
                 .addPathPatterns(USER_AUTH_REQUIRED_PATH_PATTERNS)
-                .order(2);
+                .order(3);
 
         registry.addInterceptor(ownerAuthInterceptor)
                 .addPathPatterns(OWNER_AUTH_REQUIRED_PATH_PATTERNS)
-                .order(3);
+                .order(4);
+
+
     }
 }

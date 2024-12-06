@@ -35,11 +35,17 @@ public class UserController {
             @RequestPart("request") UserSignUpRequestDto userSignUpRequestDto,
             @RequestPart(value = "images", required = false) MultipartFile image
             ) throws IOException {
+
+        //회원 가입 한 유저 객체
         User savedUser = userService.signUpUser(userSignUpRequestDto);
 
+        //picture 테이블에 담을 변수 생성
         String category = savedUser.getClass().getSimpleName();
         Long idNumber = savedUser.getId();
+        //업로드 된 이미지 파일 주소
         String publicUrl = s3Service.uploadImage(image, savedUser);
+
+        //picture 테이블에 저장
         pictureService.savePicture(publicUrl, category, idNumber);
 
         return ResponseEntity.ok().body(new UserSignUpResponseDto(savedUser, publicUrl));

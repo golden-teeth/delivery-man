@@ -14,6 +14,13 @@ public class PictureServiceImpl implements PictureService {
 
     private final PictureRepository pictureRepository;
 
+    /**
+     * picture 테이블 저장 로직
+     *
+     * @param publicUrl 업로드 된 이미지 주소
+     * @param category  연관된 테이블 이름
+     * @param idNumber  연관된 테이블의 식별자
+     */
     @Override
     public void savePicture(String publicUrl, String category, Long idNumber) {
 

@@ -25,18 +25,33 @@ public class S3ServiceImpl implements S3Service {
     @Value("${spring.cloud.aws.s3.bucket}")
     private String bucket;
 
+    /**
+     * 이미지 업로드 로직
+     *
+     * @param image 입력 받은 이미지
+     * @param user  이미지를 입력한 유저
+     * @return
+     * @throws IOException
+     */
     @Transactional
     @Override
     public String uploadImage(MultipartFile image, User user) throws IOException {
 
+        //사진을 입력 할 경우
         if (image != null) {
+
+            //이미지 파일 형식
             String extension = getImageExtension(image);
+
+            //업로드 할 파일 이름 생성
             String fileName = UUID.randomUUID() + "_" + user.getId() + "_profile" + extension;
 
+            //메타데이터 설정
             ObjectMetadata objectMetadata = new ObjectMetadata();
             objectMetadata.setContentType(image.getContentType());
             objectMetadata.setContentLength(image.getSize());
 
+            //업로드 요청 생성
             PutObjectRequest putObjectRequest = null;
             try {
                 putObjectRequest = new PutObjectRequest(bucket, fileName, image.getInputStream(), objectMetadata);
@@ -44,6 +59,7 @@ public class S3ServiceImpl implements S3Service {
                 throw new IOException(e.getMessage());
             }
 
+            //파일 업로드
             amazonS3.putObject(putObjectRequest);
 
             return getPublicUrl(fileName);
@@ -55,14 +71,23 @@ public class S3ServiceImpl implements S3Service {
         return String.format("https://%s.s3.%s.amazonaws.com/%s", bucket, amazonS3.getRegionName() ,fileName);
     }
 
+    /**
+     * 이미지 파일 형식 생성, 검증 로직
+     *
+     * @param image 입력 받은 이미지
+     * @return
+     */
     private String getImageExtension(MultipartFile image) {
+
         String extension = "";
         String originalFilename = image.getOriginalFilename();
 
+        //이미지 파일 형식 생성
         if (originalFilename != null && originalFilename.contains(".")) {
             extension = originalFilename.substring(originalFilename.lastIndexOf("."));
         }
 
+        //이미지 파일 형식 검증
         if (!extension.equals(".png") && !extension.equals(".jpg") && !extension.equals(".jpeg")) {
             throw new ApiException(PictureErrorCode.INVALID_FORMAT);
         }
