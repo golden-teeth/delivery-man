@@ -37,7 +37,7 @@ public class AdminAuthInterceptor implements HandlerInterceptor {
         //객체에서 유형 조회
         String grade = authentication.getGrade();
 
-        //owner 인지 검증
+        //admin 인지 검증
         if (!Objects.equals(grade, "admin")) {
             throw new ApiException(UserErrorCode.INVALID_GRADE);
         }

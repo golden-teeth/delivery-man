@@ -27,13 +27,23 @@ public class AdvertisementController {
 
     @PostMapping("/{shopId}/{advertisementId}/apply")
     public ResponseEntity<AdvertisementApplyResponseDto> applyAdvertisement(
-            @PathVariable Long shopId,
             @PathVariable Long advertisementId,
             @RequestBody AdvertisementApplyRequestDto dto,
             @SessionAttribute(name = Const.SESSION_KEY) Authentication authentication
     ){
         Long sessionId = authentication.getId();
-        AdvertisementApplyResponseDto advertisementApplyResponseDto = advertisementService.applyAdvertisement(shopId,advertisementId, sessionId,dto);
+        AdvertisementApplyResponseDto advertisementApplyResponseDto = advertisementService.applyAdvertisement(advertisementId, sessionId,dto);
+        return new ResponseEntity<>(advertisementApplyResponseDto, HttpStatus.OK);
+    }
+
+    @GetMapping("/{shopId}/{advertisementId}")
+    public ResponseEntity<AdvertisementApplyResponseDto> getAdvertisement(
+            @PathVariable Long shopId,
+            @PathVariable Long advertisementId,
+            @SessionAttribute(name = Const.SESSION_KEY) Authentication authentication
+    ){
+        Long sessionId = authentication.getId();
+        AdvertisementApplyResponseDto advertisementApplyResponseDto = advertisementService.findAdvertisement(shopId, advertisementId, sessionId);
         return new ResponseEntity<>(advertisementApplyResponseDto, HttpStatus.OK);
     }
 
