@@ -4,6 +4,7 @@ import com.delivery_man.config.Const;
 import com.delivery_man.dto.*;
 import com.delivery_man.entity.User;
 import com.delivery_man.service.PictureService;
+import com.delivery_man.service.S3Service;
 import com.delivery_man.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/users")
@@ -21,6 +22,7 @@ public class UserController {
 
     private final UserService userService;
     private final PictureService pictureService;
+    private final S3Service s3Service;
 
     /**
      * 회원 가입 메서드
@@ -31,11 +33,14 @@ public class UserController {
     @PostMapping("/signup")
     public ResponseEntity<UserSignUpResponseDto> creatUser(
             @RequestPart("request") UserSignUpRequestDto userSignUpRequestDto,
-            @RequestPart(value = "images", required = false) List<MultipartFile> images
-            ) {
+            @RequestPart(value = "images", required = false) MultipartFile image
+            ) throws IOException {
         User savedUser = userService.signUpUser(userSignUpRequestDto);
 
-        pictureService.uploadPicture(savedUser, images);
+        String category = savedUser.getClass().getSimpleName();
+        Long idNumber = savedUser.getId();
+        String publicUrl = s3Service.uploadImage(image, savedUser);
+        pictureService.savePicture(publicUrl, category, idNumber);
 
         return ResponseEntity.ok().body(new UserSignUpResponseDto(savedUser));
     }

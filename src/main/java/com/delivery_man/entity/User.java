@@ -34,9 +34,6 @@ public class User extends CreateAndUpdateDateEntity {
     @OneToMany(mappedBy = "user")
     private List<Order> orders = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Picture> pictures = new ArrayList<>();
-
     public User() {
     }
 

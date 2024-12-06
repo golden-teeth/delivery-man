@@ -15,15 +15,18 @@ public class Picture extends CreateAndUpdateDateEntity {
     @Column(nullable = false)
     private String imagePath;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @Column(nullable = false)
+    private String category;
+
+    @Column(nullable = false)
+    private Long idNumber;
 
     public Picture() {
     }
 
-    public Picture(String imagePath, User user) {
+    public Picture(String imagePath, String category, Long idNumber) {
         this.imagePath = imagePath;
-        this.user = user;
+        this.category = category;
+        this.idNumber = idNumber;
     }
 }
