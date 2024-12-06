@@ -1,6 +1,7 @@
 package com.delivery_man.service.impl;
 
 import com.delivery_man.Exception.ApiException;
+import com.delivery_man.constant.CartErrorCode;
 import com.delivery_man.constant.MenuErrorCode;
 import com.delivery_man.constant.ShopErrorCode;
 import com.delivery_man.constant.UserErrorCode;
@@ -19,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -33,7 +35,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public CartResponseDto create(CartCreateRequestDto dto) {
         //검증
-        validateSessionAndUser(dto);
+        validateSessionAndUser(dto.getUserId(),dto.getAuthUserId());
         //user 검증
         User user = userRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
@@ -57,13 +59,30 @@ public class CartServiceImpl implements CartService {
 
         cart.updateByDto(dto);
 
+        List<Cart> cartList = cartRepository.findByUserId(dto.getUserId());
 
-        CartResponseDto cartResponseDto = new CartResponseDto(cart);
+        CartResponseDto cartResponseDto = new CartResponseDto(cartList);
         return cartResponseDto;
     }
 
-    private static void validateSessionAndUser(CartCreateRequestDto dto) {
-        if (dto.getAuthUserId() != dto.getUserId()) {
+    @Override
+    public CartResponseDto find(Long userId, Long sessionId) {
+        //검증
+        validateSessionAndUser(userId,sessionId);
+        //user 검증
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
+        List<Cart> cartList = cartRepository.findByUserId(userId);
+        if(cartList.isEmpty()){
+            throw new ApiException(CartErrorCode.CART_NOT_FOUND);
+        }
+
+
+        return new CartResponseDto(cartList);
+    }
+
+    private static void validateSessionAndUser(Long userId, Long sessionId) {
+        if (userId !=sessionId) {
             throw new ApiException(UserErrorCode.INVALID_SESSION_ID);
         }
     }
