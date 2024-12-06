@@ -1,7 +1,6 @@
 package com.delivery_man.service.impl;
 
 import com.delivery_man.Exception.ApiException;
-import com.delivery_man.constant.ReviewFilterType;
 import com.delivery_man.constant.ShopErrorCode;
 import com.delivery_man.constant.UserErrorCode;
 import com.delivery_man.dto.*;
@@ -10,7 +9,6 @@ import com.delivery_man.constant.ShopStatus;
 import com.delivery_man.repository.*;
 import com.delivery_man.service.ShopService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -116,11 +114,7 @@ public class ShopServiceImpl implements ShopService {
                 .map(Order::getId)
                 .toList();
 
-        // Sort
-        ReviewFilterType filterType = ReviewFilterType.valueOf(sortType.toUpperCase());
-        Pageable pageable = filterType.createPageable(page,size);
-
-        List<Review> allReviews = filterType.filterReviews(reviewRepository, ordersIds, sessionId, ratingMin, ratingMax, pageable);
+        List<Review> allReviews = reviewRepository.findReviews(ordersIds,sessionId,ratingMin,ratingMax);
 
         List<ReviewResponseDto> reviewDtos = new ArrayList<>();
         for(Review review : allReviews){
