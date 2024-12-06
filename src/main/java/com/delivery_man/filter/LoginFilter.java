@@ -1,6 +1,10 @@
 package com.delivery_man.filter;
 
+import com.delivery_man.Exception.ApiException;
+import com.delivery_man.Exception.ErrorResponse;
 import com.delivery_man.config.Const;
+import com.delivery_man.constant.SessionErrorCode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -29,14 +33,30 @@ public class LoginFilter implements Filter {
 
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-        if (!isWhiteList(requestURI)) {
-            HttpSession session = httpRequest.getSession(false);
+        try{
+            if (!isWhiteList(requestURI)) {
+                HttpSession session = httpRequest.getSession(false);
 
-            if (session == null || session.getAttribute(Const.SESSION_KEY) == null) {
-                throw new ServletException(Const.SESSION_KEY + " is null");
+                if (session == null || session.getAttribute(Const.SESSION_KEY) == null) {
+                    throw new ApiException(SessionErrorCode.NO_SESSION);
+                }
             }
+            chain.doFilter(request, response);
+        }catch (ApiException e){
+            httpResponse.setStatus(e.getErrorCode().getHttpStatus().value());
+            httpResponse.setContentType("application/json;charset=UTF-8");
+
+            ErrorResponse errorResponse = ErrorResponse.builder()
+                    .code(e.getErrorCode().name())
+                    .message(e.getErrorCode().getMessage())
+                    .build();
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            String jsonResponse = objectMapper.writeValueAsString(errorResponse);
+
+            httpResponse.getWriter().write(jsonResponse);
         }
-        chain.doFilter(request, response);
+
     }
 
     //화이트 리스트 검증 메서드

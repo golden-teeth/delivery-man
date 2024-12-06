@@ -1,6 +1,7 @@
 package com.delivery_man.config;
 
 import com.delivery_man.Exception.ApiException;
+import com.delivery_man.constant.SessionErrorCode;
 import com.delivery_man.constant.UserErrorCode;
 import com.delivery_man.dto.Authentication;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,7 +29,7 @@ public class UserAuthInterceptor implements HandlerInterceptor {
         //session 값 확인
         HttpSession session = request.getSession(false);
         if (session == null) {
-            throw new RuntimeException("session is null");
+            throw new ApiException(SessionErrorCode.NO_SESSION);
         }
 
         //검증 대상인지 확인

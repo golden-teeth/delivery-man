@@ -8,18 +8,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Component;
-import org.springframework.util.PatternMatchUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import java.util.Objects;
 
 @Component
-public class OwnerAuthInterceptor implements HandlerInterceptor {
-
-    private static final String[] PATH_PATTERNS = {"/shops", "/shops/*"};
-
+public class AdminAuthInterceptor implements HandlerInterceptor {
     /**
-     * owner 권한 검증
+     * admin 권한 검증
      *
      * @param request
      * @param response
@@ -35,13 +31,6 @@ public class OwnerAuthInterceptor implements HandlerInterceptor {
             throw new ApiException(SessionErrorCode.NO_SESSION);
         }
 
-        String requestURI = request.getRequestURI();
-
-        //검증 대상인지 확인
-        if (isPassPath(requestURI) && "GET".equalsIgnoreCase(request.getMethod())) {
-            return true;
-        }
-
         //session 으로 객체 생성
         Authentication authentication = (Authentication) session.getAttribute(Const.SESSION_KEY);
 
@@ -49,14 +38,9 @@ public class OwnerAuthInterceptor implements HandlerInterceptor {
         String grade = authentication.getGrade();
 
         //owner 인지 검증
-        if (!Objects.equals(grade, "owner")) {
+        if (!Objects.equals(grade, "admin")) {
             throw new ApiException(UserErrorCode.INVALID_GRADE);
         }
         return true;
-    }
-
-    //검증 대상 확인 로직
-    private boolean isPassPath(String requestURI) {
-        return PatternMatchUtils.simpleMatch(PATH_PATTERNS, requestURI);
     }
 }
