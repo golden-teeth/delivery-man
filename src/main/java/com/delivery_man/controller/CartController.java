@@ -19,14 +19,21 @@ import org.springframework.web.bind.annotation.*;
 public class CartController {
 
     private final CartService cartService;
+
     @PostMapping
-    public ResponseEntity<CartResponseDto> create (@PathVariable("userId") Long userId,
-                                                         @Valid @RequestBody CartCreateRequestDto dto,
-                                                         @SessionAttribute(name = Const.SESSION_KEY) Authentication authentication){
+    public ResponseEntity<CartResponseDto> create(@PathVariable("userId") Long userId,
+                                                  @Valid @RequestBody CartCreateRequestDto dto,
+                                                  @SessionAttribute(name = Const.SESSION_KEY) Authentication authentication) {
         dto.updateIds(userId, authentication.getId());
 
         return new ResponseEntity<>(cartService.create(dto), HttpStatus.OK);
+    }
 
+    @GetMapping
+    public ResponseEntity<CartResponseDto> find(@PathVariable("userId") Long userId,
+                                                @SessionAttribute(name = Const.SESSION_KEY) Authentication authentication) {
+        return new ResponseEntity<>(cartService.find(userId, authentication.getId()), HttpStatus.OK);
     }
 }
+
 

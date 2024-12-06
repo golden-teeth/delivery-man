@@ -5,4 +5,6 @@ import com.delivery_man.dto.CartResponseDto;
 
 public interface CartService {
     CartResponseDto create( CartCreateRequestDto dto);
+
+    CartResponseDto find(Long userId, Long id);
 }
