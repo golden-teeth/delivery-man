@@ -49,7 +49,7 @@ public class PointServiceImpl implements PointService {
         if (Objects.equals(order.getStatus(), "done")) {
             BigDecimal totalPoint = order.getTotalPrice().multiply(BigDecimal.valueOf(0.03));
             Point point = new Point();
-            point.updatePoint(totalPoint, LocalDateTime.now(), user);
+            point.updatePoint(totalPoint, user);
             pointRepository.save(point);
         }
     }
