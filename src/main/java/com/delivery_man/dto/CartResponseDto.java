@@ -18,14 +18,8 @@ public class CartResponseDto {
     public CartResponseDto(Cart cart) {
         this.shopId = cart.getMenu().getShop().getId();
         this.cartMenuResponseDtoList = new ArrayList<>();
-        this.cartMenuResponseDtoList.add(new CartMenuResponseDto(cart));
+        this.cartMenuResponseDtoList.add(new CartMenuResponseDto(cart.getMenu(),cart.getQuantity()));
+
     }
 
-    public CartResponseDto(List<Cart> cartList) {
-        this.shopId = cartList.get(0).getMenu().getShop().getId();
-        this.cartMenuResponseDtoList = new ArrayList<>();
-        for (Cart cart : cartList) {
-            this.cartMenuResponseDtoList.add(new CartMenuResponseDto(cart));
-        }
-    }
 }
