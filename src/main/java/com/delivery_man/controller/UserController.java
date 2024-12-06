@@ -42,7 +42,7 @@ public class UserController {
         String publicUrl = s3Service.uploadImage(image, savedUser);
         pictureService.savePicture(publicUrl, category, idNumber);
 
-        return ResponseEntity.ok().body(new UserSignUpResponseDto(savedUser));
+        return ResponseEntity.ok().body(new UserSignUpResponseDto(savedUser, publicUrl));
     }
 
     /**
