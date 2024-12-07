@@ -19,6 +19,7 @@ public class Review extends CreateDateEntity {
     @Column(nullable = false)
     private int rating;
 
+    // store
 
     @ManyToOne
     @JoinColumn(name="user_id")

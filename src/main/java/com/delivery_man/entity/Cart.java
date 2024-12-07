@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table
+@Table(name = "carts")
 @Getter
 @NoArgsConstructor
 public class Cart extends CreateAndUpdateDateEntity{
@@ -19,6 +19,8 @@ public class Cart extends CreateAndUpdateDateEntity{
     @ManyToOne
     @JoinColumn(name = "menu_id")
     private Menu menu;
+
+    // store
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -35,6 +37,5 @@ public class Cart extends CreateAndUpdateDateEntity{
 
     public void updateUser(User user) {
         this.user = user;
-
     }
 }

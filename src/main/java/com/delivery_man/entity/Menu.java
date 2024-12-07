@@ -1,5 +1,6 @@
 package com.delivery_man.entity;
 
+import com.delivery_man.constant.MenuStatus;
 import com.delivery_man.dto.MenuCreateRequestDto;
 import com.delivery_man.dto.MenuUpdateRequestDto;
 import jakarta.persistence.*;
@@ -22,8 +23,9 @@ public class Menu extends CreateAndUpdateDateEntity {
     private String name;
     @Column(nullable = false)
     private BigDecimal price;
-    @Column(nullable = false)
-    private String status;
+
+    @Enumerated(EnumType.STRING)
+    private MenuStatus status;
 
     @ManyToOne
     @JoinColumn(name = "shop_id")
@@ -33,7 +35,7 @@ public class Menu extends CreateAndUpdateDateEntity {
     public Menu(MenuCreateRequestDto dto) {
         this.name = dto.getName();
         this.price = dto.getPrice();
-        this.status="use";
+        this.status=MenuStatus.AVAILABLE;
     }
 
     public void update(MenuUpdateRequestDto dto) {
@@ -44,7 +46,7 @@ public class Menu extends CreateAndUpdateDateEntity {
 
 
     public void delete() {
-        this.status="delete";
+        this.status=MenuStatus.DELETED;
     }
 
     public void updateShop(Shop shop) {
