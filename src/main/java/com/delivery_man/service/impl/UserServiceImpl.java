@@ -2,7 +2,7 @@ package com.delivery_man.service.impl;
 
 import com.delivery_man.Exception.ApiException;
 import com.delivery_man.config.PasswordEncoder;
-import com.delivery_man.constant.UserErrorCode;
+import com.delivery_man.constant.errorcode.UserErrorCode;
 import com.delivery_man.dto.auth.Authentication;
 import com.delivery_man.dto.user.*;
 import com.delivery_man.entity.Point;

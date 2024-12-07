@@ -1,9 +1,9 @@
 package com.delivery_man.service.impl;
 
 import com.delivery_man.Exception.ApiException;
-import com.delivery_man.constant.AdErrorCode;
-import com.delivery_man.constant.ShopErrorCode;
-import com.delivery_man.constant.UserErrorCode;
+import com.delivery_man.constant.errorcode.AdErrorCode;
+import com.delivery_man.constant.errorcode.ShopErrorCode;
+import com.delivery_man.constant.errorcode.UserErrorCode;
 import com.delivery_man.dto.advertisement.AdvertisementApplyRequestDto;
 import com.delivery_man.dto.advertisement.AdvertisementApplyResponseDto;
 import com.delivery_man.dto.advertisement.AdvertisementCreateRequestDto;

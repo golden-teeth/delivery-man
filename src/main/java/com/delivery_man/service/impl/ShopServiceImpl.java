@@ -2,8 +2,8 @@ package com.delivery_man.service.impl;
 
 import com.delivery_man.Exception.ApiException;
 import com.delivery_man.constant.ReviewFilterType;
-import com.delivery_man.constant.ShopErrorCode;
-import com.delivery_man.constant.UserErrorCode;
+import com.delivery_man.constant.errorcode.ShopErrorCode;
+import com.delivery_man.constant.errorcode.UserErrorCode;
 import com.delivery_man.dto.menu.MenuResponseDto;
 import com.delivery_man.dto.review.ReviewResponseDto;
 import com.delivery_man.dto.shop.*;

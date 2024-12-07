@@ -1,4 +1,4 @@
-package com.delivery_man.config;
+package com.delivery_man.constant;
 
 
 public class Const {

@@ -1,4 +1,4 @@
-package com.delivery_man.constant;
+package com.delivery_man.constant.errorcode;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.delivery_man.constant;
+package com.delivery_man.constant.errorcode;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @RequiredArgsConstructor
-public enum ReviewErrorCode implements ErrorCode{
+public enum ReviewErrorCode implements ErrorCode {
     /* 400 잘못된 요청 */
     REVIEW_NOT_CREATED(HttpStatus.BAD_REQUEST, "주문 완료 후 리뷰를 작성해주세요."),
 

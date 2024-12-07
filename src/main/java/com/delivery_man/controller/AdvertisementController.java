@@ -1,6 +1,6 @@
 package com.delivery_man.controller;
 
-import com.delivery_man.config.Const;
+import com.delivery_man.constant.Const;
 import com.delivery_man.dto.advertisement.AdvertisementApplyRequestDto;
 import com.delivery_man.dto.advertisement.AdvertisementApplyResponseDto;
 import com.delivery_man.dto.advertisement.AdvertisementCreateRequestDto;

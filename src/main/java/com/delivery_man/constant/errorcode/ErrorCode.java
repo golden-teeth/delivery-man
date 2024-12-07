@@ -1,4 +1,4 @@
-package com.delivery_man.constant;
+package com.delivery_man.constant.errorcode;
 
 import org.springframework.http.HttpStatus;
 
