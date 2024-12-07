@@ -18,7 +18,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     private static final String[] ADMIN_AUTH_REQUIRED_PATH_PATTERNS = {"/advertisement/*/*/apply","/admin/dashboard/*"};
     private static final String[] OWNER_AUTH_REQUIRED_PATH_PATTERNS = {"/shops", "/shops/*","/advertisement/*"};
-    private static final String[] USER_AUTH_REQUIRED_PATH_PATTERNS = {"/users/*/orders","/users/*/orders/*","/orders/*/reviews"};
+    private static final String[] USER_AUTH_REQUIRED_PATH_PATTERNS = {"/users/*/carts","/users/*/carts/*","/users/*/orders","/users/*/orders/*","/orders/*/reviews"};
 
     private final AdminAuthInterceptor adminAuthInterceptor;
     private final UserAuthInterceptor userAuthInterceptor;
