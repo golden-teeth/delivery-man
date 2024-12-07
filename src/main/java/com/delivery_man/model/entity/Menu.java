@@ -35,7 +35,7 @@ public class Menu extends CreateAndUpdateDateEntity {
     public Menu(MenuCreateRequestDto dto) {
         this.name = dto.getName();
         this.price = dto.getPrice();
-        this.status=MenuStatus.AVAILABLE;
+        this.status= MenuStatus.AVAILABLE;
     }
 
     public void update(MenuUpdateRequestDto dto) {
@@ -46,7 +46,7 @@ public class Menu extends CreateAndUpdateDateEntity {
 
 
     public void delete() {
-        this.status=MenuStatus.DELETED;
+        this.status= MenuStatus.DELETED;
     }
 
     public void updateShop(Shop shop) {

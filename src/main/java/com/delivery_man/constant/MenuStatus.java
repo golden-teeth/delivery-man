@@ -1,4 +1,4 @@
-package com.delivery_man.entity;
+package com.delivery_man.constant;
 
 public enum MenuStatus {
     AVAILABLE,
