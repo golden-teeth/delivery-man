@@ -1,5 +1,6 @@
 package com.delivery_man.model.dto.menu;
 
+import com.delivery_man.constant.MenuStatus;
 import com.delivery_man.model.entity.Menu;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ public class MenuResponseDto {
     private Long id;
     private String name;
     private BigDecimal price;
-    private String status;
+    private MenuStatus status;
     private LocalDateTime updateAt;
     private Long shopId;
 

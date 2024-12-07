@@ -46,7 +46,7 @@ public class Menu extends CreateAndUpdateDateEntity {
 
 
     public void delete() {
-        this.status=MenuStatus.DELETED;
+        this.status= MenuStatus.DELETED;
     }
 
     public void updateShop(Shop shop) {
