@@ -19,11 +19,15 @@ public class OrderItem extends CreateDateEntity{
     private BigDecimal price;
 
     @ManyToOne
-    @JoinColumn(name = "shop_id")
-    private Shop shop;
-
-    @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
 
+    public OrderItem(Cart cart) {
+        this.name = cart.getMenu().getName();
+        this.price = cart.getMenu().getPrice();
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
 }

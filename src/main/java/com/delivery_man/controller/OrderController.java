@@ -2,9 +2,9 @@ package com.delivery_man.controller;
 
 import com.delivery_man.constant.Const;
 import com.delivery_man.model.dto.auth.Authentication;
-import com.delivery_man.model.dto.order.OrderCreateRequestDto;
 import com.delivery_man.model.dto.order.OrderResponseDto;
 import com.delivery_man.model.dto.order.OrderUpdateRequestDto;
+import com.delivery_man.model.dto.user.UserValidDto;
 import com.delivery_man.service.OrderService;
 import com.delivery_man.service.PointService;
 import jakarta.validation.Valid;
@@ -22,11 +22,10 @@ public class OrderController {
 
     @PostMapping("/users/{userId}/orders")
     public ResponseEntity<OrderResponseDto> create(@PathVariable Long userId,
-                                                   @SessionAttribute(name = Const.SESSION_KEY) Authentication authentication,
-                                                   @Valid @RequestBody OrderCreateRequestDto dto) {
+                                                   @SessionAttribute(name = Const.SESSION_KEY) Authentication authentication) {
 
-        dto.updateIds(userId,authentication.getId());
-        OrderResponseDto responseDto = orderService.create(dto);
+        UserValidDto userValidDto = new UserValidDto(userId, authentication.getId());
+        OrderResponseDto responseDto = orderService.create(userValidDto);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 

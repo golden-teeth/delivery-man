@@ -10,13 +10,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class OrderResponseDto {
     private Long userId;
-    private Long menuId;
+    private Long orderId;
     private LocalDateTime updateAt;
     private String status;
 
     public OrderResponseDto(Order order) {
         this.userId = order.getUser().getId();
-        this.menuId = order.getMenu().getId();
+        this.orderId = order.getId();
         this.updateAt = order.getUpdatedAt();
         this.status = order.getStatus();
 

@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -25,10 +27,6 @@ public class Order extends CreateAndUpdateDateEntity {
     private BigDecimal totalPrice;
 
     @ManyToOne
-    @JoinColumn(name = "menu_id")
-    private Menu menu;
-
-    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -43,23 +41,45 @@ public class Order extends CreateAndUpdateDateEntity {
     private List<Review> review;
 
 
+    //todo enum 타입 변경
     public Order(OrderCreateRequestDto dto) {
         this.status = "use";
     }
 
-    public void updateMenu(Menu menu) {
-        this.menu = menu;
-        this.totalPrice = menu.getPrice();
+    public Order(List<Cart> carts) {
+        this.status = "use";
+        this.shop = carts.get(0).getMenu().getShop();
+        this.orderItems = createOrderItemList(carts);
+        this.totalPrice = calculateTotalPrice(carts);
+        this.user = carts.get(0).getUser();
     }
 
-    public void updateUser(User user) {
-        this.user = user;
+    private BigDecimal calculateTotalPrice(List<Cart> carts) {
+        BigDecimal totalPrice = new BigDecimal(0);
+        for (Cart cart : carts) {
+            BigDecimal menuPrice = cart.getMenu().getPrice();
+            int quantity = cart.getQuantity();
+            BigDecimal price = menuPrice.multiply(new BigDecimal(quantity));
+            totalPrice = totalPrice.add(price);
+
+        }
+        // 표현식 변경
+        totalPrice =  totalPrice.setScale(2, RoundingMode.HALF_UP);
+        return totalPrice;
     }
+
+    private List<OrderItem> createOrderItemList(List<Cart> carts) {
+        List<OrderItem> orderItemList = new ArrayList<>();
+        for (Cart cart : carts) {
+            orderItemList.add(new OrderItem(cart));
+        }
+        return orderItemList;
+    }
+
 
     public void updateStatus( String status) {
         this.status = status;
     }
 
-    public void updateShop(Shop shop){this.shop = shop;}
 
 }
