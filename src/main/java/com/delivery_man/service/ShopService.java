@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface ShopService {
-    ShopResponseDto createShop(ShopCreateRequestDto dto, Long sessionId, MultipartFile image) throws IOException;
+    ShopWithPictureResponseDto createShop(ShopCreateRequestDto dto, Long sessionId, MultipartFile image) throws IOException;
 
     List<ShopResponseDto> findAllShops(String shopName, Long sessionId);
 

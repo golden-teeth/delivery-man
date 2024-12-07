@@ -45,7 +45,7 @@ public class ShopServiceImpl implements ShopService {
      * @return
      */
     @Override
-    public ShopResponseDto createShop(ShopCreateRequestDto dto, Long sessionId, MultipartFile image) throws IOException {
+    public ShopWithPictureResponseDto createShop(ShopCreateRequestDto dto, Long sessionId, MultipartFile image) throws IOException {
         User findUser = userRepository.findById(sessionId)
                 .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
         List<Shop> findShops = shopRepository.findAllByUserId(sessionId);
@@ -71,7 +71,7 @@ public class ShopServiceImpl implements ShopService {
         //picture 테이블에 저장
         pictureService.savePicture(publicUrl, category, idNumber);
 
-        return new ShopResponseDto(createShop);
+        return new ShopWithPictureResponseDto(createShop, publicUrl);
     }
 
     /**

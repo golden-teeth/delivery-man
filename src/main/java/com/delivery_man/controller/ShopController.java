@@ -26,14 +26,14 @@ public class ShopController {
      * @return
      */
     @PostMapping
-    public ResponseEntity<ShopResponseDto> createShop(
+    public ResponseEntity<ShopWithPictureResponseDto> createShop(
            @Valid @RequestPart ShopCreateRequestDto dto,
            @RequestPart(value = "images", required = false) MultipartFile image,
            @SessionAttribute(name = Const.SESSION_KEY) Authentication session
     ) throws IOException {
         Long sessionId = session.getId();
-        ShopResponseDto shopResponseDto = shopService.createShop(dto, sessionId, image);
-        return new ResponseEntity<>(shopResponseDto, HttpStatus.CREATED);
+        ShopWithPictureResponseDto shopWithPictureResponseDto = shopService.createShop(dto, sessionId, image);
+        return new ResponseEntity<>(shopWithPictureResponseDto, HttpStatus.CREATED);
     }
 
     /**
