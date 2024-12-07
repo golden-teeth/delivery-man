@@ -1,6 +1,6 @@
 package com.delivery_man.service;
 
-import com.delivery_man.dto.order.OrderResponseDto;
+import com.delivery_man.model.dto.order.OrderResponseDto;
 
 public interface PointService {
 
