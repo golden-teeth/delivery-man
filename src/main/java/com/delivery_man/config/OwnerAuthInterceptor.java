@@ -1,9 +1,10 @@
 package com.delivery_man.config;
 
 import com.delivery_man.Exception.ApiException;
-import com.delivery_man.constant.SessionErrorCode;
-import com.delivery_man.constant.UserErrorCode;
-import com.delivery_man.dto.Authentication;
+import com.delivery_man.constant.Const;
+import com.delivery_man.constant.errorcode.SessionErrorCode;
+import com.delivery_man.constant.errorcode.UserErrorCode;
+import com.delivery_man.dto.auth.Authentication;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;

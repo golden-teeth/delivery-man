@@ -1,8 +1,8 @@
 package com.delivery_man.service;
 
-import com.delivery_man.dto.CartCreateRequestDto;
-import com.delivery_man.dto.CartResponseDto;
-import com.delivery_man.dto.UserValidDto;
+import com.delivery_man.dto.cart.CartCreateRequestDto;
+import com.delivery_man.dto.cart.CartResponseDto;
+import com.delivery_man.dto.user.UserValidDto;
 
 public interface CartService {
     CartResponseDto create( CartCreateRequestDto dto);
