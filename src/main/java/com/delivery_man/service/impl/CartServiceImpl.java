@@ -22,6 +22,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,7 +41,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public CartResponseDto create(CartCreateRequestDto dto) {
         //검증
-        userValidation.validateWithSession(dto.getUserId(),dto.getAuthUserId());
+        userValidation.validateWithSession(dto.getUserId(), dto.getAuthUserId());
         //user 검증
         User user = userRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
@@ -50,39 +52,62 @@ public class CartServiceImpl implements CartService {
         Menu menu = menuRepository.findById(dto.getMenuId())
                 .orElseThrow(() -> new ApiException(MenuErrorCode.MENU_NOT_FOUND));
 
-        Optional<Cart> byUserIdAndMenuId = cartRepository.findByUserIdAndMenuId(user.getId(), menu.getId());
-        Cart cart = new Cart();
-        if (byUserIdAndMenuId.isEmpty()) {
-            cart.updateMenu(menu);
-            cart.updateUser(user);
+        List<Cart> cartList = cartRepository.findByUserId(user.getId());
+        //cartList 검증
+        validateCartListExpired(cartList);
+
+        /*
+        요청한 메뉴가 없을 경우 장바구니에 추가
+        요청한 메뉴가 있을 경우 장바구니 수정
+         */
+        Optional<Cart> cartByMenuId = cartList.stream()
+                .filter(x -> x.getMenu().getId().equals(dto.getMenuId()))
+                .findAny();
+
+        if (cartByMenuId.isPresent()) {
+            cartByMenuId.get().updateByDto(dto);
+        } else {
+            Cart cart = new Cart(menu, user);
+            cart.updateByDto(dto);
             cartRepository.save(cart);
-        }else {
-            cart = byUserIdAndMenuId.get();
+
+            cartList.add(cart);
         }
 
 
-        cart.updateByDto(dto);
-
-        List<Cart> cartList = cartRepository.findByUserId(dto.getUserId());
-
-        CartResponseDto cartResponseDto = new CartResponseDto(cartList);
-        return cartResponseDto;
+        return new CartResponseDto(cartList);
     }
 
     @Override
     public CartResponseDto find(Long userId, Long sessionId) {
         //검증
-        userValidation.validateWithSession(userId,sessionId);
+        userValidation.validateWithSession(userId, sessionId);
         //user 검증
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
         List<Cart> cartList = cartRepository.findByUserId(userId);
-        if(cartList.isEmpty()){
+        if (cartList.isEmpty()) {
             throw new ApiException(CartErrorCode.CART_NOT_FOUND);
         }
 
+        validateCartListExpired(cartList);
+
 
         return new CartResponseDto(cartList);
+    }
+
+    private void validateCartListExpired(List<Cart> cartList) {
+        if (isBefore1DaysAgo(cartList)) {
+            cartList.clear();
+        }
+    }
+
+    private boolean isBefore1DaysAgo(List<Cart> cartList) {
+        return cartList.stream()
+                .map(x -> x.getUpdatedAt())
+                .sorted(Comparator.reverseOrder())
+                .limit(1)
+                .noneMatch(x -> x.isAfter(LocalDateTime.now().minusDays(1)));
     }
 
     @Override
@@ -103,15 +128,5 @@ public class CartServiceImpl implements CartService {
         return new CartResponseDto(cartList);
     }
 
-    @Override
-    public void deleteAll(UserValidDto userValidDto) {
-        //검증
-        userValidation.validateWithSession(userValidDto.getSessionId(), userValidDto.getUserId());
-        //user 검증
-        User user = userRepository.findById(userValidDto.getUserId())
-                .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
-
-        cartRepository.deleteById(userValidDto.getUserId());
-    }
 
 }
