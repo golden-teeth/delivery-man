@@ -8,7 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -25,11 +27,12 @@ public class ShopController {
      */
     @PostMapping
     public ResponseEntity<ShopResponseDto> createShop(
-           @Valid @RequestBody ShopCreateRequestDto dto,
+           @Valid @RequestPart ShopCreateRequestDto dto,
+           @RequestPart(value = "images", required = false) MultipartFile image,
            @SessionAttribute(name = Const.SESSION_KEY) Authentication session
-    ){
+    ) throws IOException {
         Long sessionId = session.getId();
-        ShopResponseDto shopResponseDto = shopService.createShop(dto, sessionId);
+        ShopResponseDto shopResponseDto = shopService.createShop(dto, sessionId, image);
         return new ResponseEntity<>(shopResponseDto, HttpStatus.CREATED);
     }
 

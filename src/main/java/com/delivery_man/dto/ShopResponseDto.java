@@ -1,8 +1,7 @@
 package com.delivery_man.dto;
 
-import com.delivery_man.entity.Shop;
-import com.delivery_man.constant.ClosedDays;
 import com.delivery_man.constant.ShopStatus;
+import com.delivery_man.entity.Shop;
 import lombok.Getter;
 
 import java.math.BigDecimal;
@@ -42,7 +41,7 @@ public class ShopResponseDto {
         this.userId = userId;
     }
 
-    public ShopResponseDto(Shop shop){
+    public ShopResponseDto(Shop shop) {
         this.id = shop.getId();
         this.name = shop.getName();
         this.minimumPrice = shop.getMinimumPrice();

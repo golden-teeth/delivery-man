@@ -2,8 +2,6 @@ package com.delivery_man.controller;
 
 import com.delivery_man.config.Const;
 import com.delivery_man.dto.*;
-import com.delivery_man.service.PictureService;
-import com.delivery_man.service.S3Service;
 import com.delivery_man.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +19,6 @@ import java.io.IOException;
 public class UserController {
 
     private final UserService userService;
-    private final PictureService pictureService;
-    private final S3Service s3Service;
 
     /**
      * 회원 가입 메서드
@@ -68,7 +64,6 @@ public class UserController {
      */
     @GetMapping("/{userId}")
     public ResponseEntity<UserResponseDto> findUser(@PathVariable Long userId,
-                                                    HttpServletRequest request,
                                                     @SessionAttribute(name = Const.SESSION_KEY) Authentication session) {
 
         Long sessionId = session.getId();

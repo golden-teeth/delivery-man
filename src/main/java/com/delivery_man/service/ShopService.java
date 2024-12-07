@@ -1,12 +1,13 @@
 package com.delivery_man.service;
 
 import com.delivery_man.dto.*;
-import jakarta.validation.Valid;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface ShopService {
-    ShopResponseDto createShop(ShopCreateRequestDto dto, Long sessionId) ;
+    ShopResponseDto createShop(ShopCreateRequestDto dto, Long sessionId, MultipartFile image) throws IOException;
 
     List<ShopResponseDto> findAllShops(String shopName, Long sessionId);
 
