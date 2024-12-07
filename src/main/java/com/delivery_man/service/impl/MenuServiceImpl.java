@@ -1,12 +1,12 @@
 package com.delivery_man.service.impl;
 
 import com.delivery_man.Exception.ApiException;
-import com.delivery_man.constant.MenuErrorCode;
-import com.delivery_man.constant.ShopErrorCode;
-import com.delivery_man.constant.UserErrorCode;
-import com.delivery_man.dto.MenuCreateRequestDto;
-import com.delivery_man.dto.MenuResponseDto;
-import com.delivery_man.dto.MenuUpdateRequestDto;
+import com.delivery_man.constant.errorcode.MenuErrorCode;
+import com.delivery_man.constant.errorcode.ShopErrorCode;
+import com.delivery_man.constant.errorcode.UserErrorCode;
+import com.delivery_man.dto.menu.MenuCreateRequestDto;
+import com.delivery_man.dto.menu.MenuResponseDto;
+import com.delivery_man.dto.menu.MenuUpdateRequestDto;
 import com.delivery_man.entity.Menu;
 import com.delivery_man.entity.Shop;
 import com.delivery_man.entity.User;

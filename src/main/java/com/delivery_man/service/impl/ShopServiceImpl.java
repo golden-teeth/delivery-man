@@ -2,9 +2,11 @@ package com.delivery_man.service.impl;
 
 import com.delivery_man.Exception.ApiException;
 import com.delivery_man.constant.ReviewFilterType;
-import com.delivery_man.constant.ShopErrorCode;
-import com.delivery_man.constant.UserErrorCode;
-import com.delivery_man.dto.*;
+import com.delivery_man.constant.errorcode.ShopErrorCode;
+import com.delivery_man.constant.errorcode.UserErrorCode;
+import com.delivery_man.dto.menu.MenuResponseDto;
+import com.delivery_man.dto.review.ReviewResponseDto;
+import com.delivery_man.dto.shop.*;
 import com.delivery_man.entity.*;
 import com.delivery_man.constant.ShopStatus;
 import com.delivery_man.repository.*;
@@ -143,7 +145,7 @@ public class ShopServiceImpl implements ShopService {
      */
     @Override
     @Transactional
-    public ShopUpdateStatusResponseDto updateShopStatus(ShopUpdateStatusRequestDto dto,Long shopId) {
+    public ShopUpdateStatusResponseDto updateShopStatus(ShopUpdateStatusRequestDto dto, Long shopId) {
         Shop findShop = shopRepository.findById(shopId)
                 .orElseThrow(() -> new ApiException(ShopErrorCode.SHOP_NOT_FOUND));
 

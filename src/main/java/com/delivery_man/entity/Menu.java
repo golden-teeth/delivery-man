@@ -1,8 +1,8 @@
 package com.delivery_man.entity;
 
 import com.delivery_man.constant.MenuStatus;
-import com.delivery_man.dto.MenuCreateRequestDto;
-import com.delivery_man.dto.MenuUpdateRequestDto;
+import com.delivery_man.dto.menu.MenuCreateRequestDto;
+import com.delivery_man.dto.menu.MenuUpdateRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

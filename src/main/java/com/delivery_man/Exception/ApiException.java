@@ -1,6 +1,6 @@
 package com.delivery_man.Exception;
 
-import com.delivery_man.constant.ErrorCode;
+import com.delivery_man.constant.errorcode.ErrorCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
