@@ -40,10 +40,10 @@ public class Shop extends CreateAndUpdateDateEntity {
     private User user;
 
     @OneToMany(mappedBy="shop", cascade = CascadeType.REMOVE)
-    private final List<Menu> menus = new ArrayList<Menu>();
+    private List<Menu> menus;
 
     @OneToMany(mappedBy = "shop", cascade = CascadeType.REMOVE)
-    private final List<Order> orders = new ArrayList<>();
+    private List<Order> orders;
 
     public Shop() {
     }

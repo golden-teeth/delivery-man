@@ -38,10 +38,10 @@ public class Order extends CreateAndUpdateDateEntity {
     private Shop shop;
 
     @OneToMany(mappedBy = "order")
-    private List<OrderItem> orderItems= new ArrayList<>();
+    private List<OrderItem> orderItems;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private final List<Review> review = new ArrayList<>();
+    private List<Review> review;
 
 
     public Order(OrderCreateRequestDto dto) {
