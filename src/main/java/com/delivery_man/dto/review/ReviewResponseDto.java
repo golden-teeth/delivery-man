@@ -1,4 +1,4 @@
-package com.delivery_man.dto;
+package com.delivery_man.dto.review;
 
 import lombok.Getter;
 

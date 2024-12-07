@@ -1,10 +1,10 @@
 package com.delivery_man.controller;
 
 import com.delivery_man.config.Const;
-import com.delivery_man.dto.Authentication;
-import com.delivery_man.dto.OrderCreateRequestDto;
-import com.delivery_man.dto.OrderResponseDto;
-import com.delivery_man.dto.OrderUpdateRequestDto;
+import com.delivery_man.dto.auth.Authentication;
+import com.delivery_man.dto.order.OrderCreateRequestDto;
+import com.delivery_man.dto.order.OrderResponseDto;
+import com.delivery_man.dto.order.OrderUpdateRequestDto;
 import com.delivery_man.service.OrderService;
 import com.delivery_man.service.PointService;
 import jakarta.validation.Valid;

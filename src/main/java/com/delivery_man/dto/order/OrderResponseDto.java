@@ -1,4 +1,4 @@
-package com.delivery_man.dto;
+package com.delivery_man.dto.order;
 
 import com.delivery_man.entity.Order;
 import lombok.Getter;

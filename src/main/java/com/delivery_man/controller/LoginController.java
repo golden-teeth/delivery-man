@@ -1,8 +1,8 @@
 package com.delivery_man.controller;
 
 import com.delivery_man.config.Const;
-import com.delivery_man.dto.UserLoginRequestDto;
-import com.delivery_man.dto.Authentication;
+import com.delivery_man.dto.user.UserLoginRequestDto;
+import com.delivery_man.dto.auth.Authentication;
 import com.delivery_man.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;

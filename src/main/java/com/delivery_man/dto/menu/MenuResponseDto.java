@@ -1,4 +1,4 @@
-package com.delivery_man.dto;
+package com.delivery_man.dto.menu;
 
 import com.delivery_man.entity.Menu;
 import lombok.Getter;

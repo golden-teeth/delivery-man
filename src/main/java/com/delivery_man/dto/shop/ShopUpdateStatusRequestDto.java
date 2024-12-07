@@ -1,7 +1,6 @@
-package com.delivery_man.dto;
+package com.delivery_man.dto.shop;
 
 import com.delivery_man.constant.ShopStatus;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 

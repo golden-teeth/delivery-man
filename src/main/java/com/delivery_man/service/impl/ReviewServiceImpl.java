@@ -4,9 +4,8 @@ import com.delivery_man.Exception.ApiException;
 import com.delivery_man.constant.OrderErrorCode;
 import com.delivery_man.constant.ReviewErrorCode;
 import com.delivery_man.constant.UserErrorCode;
-import com.delivery_man.dto.ReviewCreateRequestDto;
-import com.delivery_man.dto.ReviewResponseDto;
-import com.delivery_man.dto.UserSignUpResponseDto;
+import com.delivery_man.dto.review.ReviewCreateRequestDto;
+import com.delivery_man.dto.review.ReviewResponseDto;
 import com.delivery_man.entity.Order;
 import com.delivery_man.entity.Review;
 import com.delivery_man.entity.User;
@@ -15,12 +14,7 @@ import com.delivery_man.repository.ReviewRepository;
 import com.delivery_man.repository.UserRepository;
 import com.delivery_man.service.ReviewService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

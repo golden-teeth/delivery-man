@@ -1,6 +1,7 @@
-package com.delivery_man.dto;
+package com.delivery_man.dto.shop;
 
-import com.delivery_man.entity.Menu;
+import com.delivery_man.dto.menu.MenuResponseDto;
+import com.delivery_man.dto.review.ReviewResponseDto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

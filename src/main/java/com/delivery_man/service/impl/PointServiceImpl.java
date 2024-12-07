@@ -3,7 +3,7 @@ package com.delivery_man.service.impl;
 import com.delivery_man.Exception.ApiException;
 import com.delivery_man.constant.OrderErrorCode;
 import com.delivery_man.constant.UserErrorCode;
-import com.delivery_man.dto.OrderResponseDto;
+import com.delivery_man.dto.order.OrderResponseDto;
 import com.delivery_man.entity.Order;
 import com.delivery_man.entity.Point;
 import com.delivery_man.entity.User;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Service

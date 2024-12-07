@@ -1,6 +1,8 @@
-package com.delivery_man.dto;
+package com.delivery_man.dto.menu;
 
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
+import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -8,22 +10,21 @@ import java.math.BigDecimal;
 
 @NoArgsConstructor
 @Getter
-public class MenuUpdateRequestDto {
+public class MenuCreateRequestDto {
     @Null
     private Long userId;
     @Null
     private Long shopId;
 
-    @Null
-    private Long menuId;
-
+    @NotNull
     private String name;
 
+    @NotNull
+    @Positive
     private BigDecimal price;
 
-    public void setIds(Long userId,Long shopId,Long menuId){
+    public void setIds(Long userId,Long shopId){
         this.userId=userId;
         this.shopId=shopId;
-        this.menuId=menuId;
     }
 }

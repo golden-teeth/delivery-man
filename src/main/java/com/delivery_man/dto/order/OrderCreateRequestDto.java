@@ -1,4 +1,4 @@
-package com.delivery_man.dto;
+package com.delivery_man.dto.order;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;

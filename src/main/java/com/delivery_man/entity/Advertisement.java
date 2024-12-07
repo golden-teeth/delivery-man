@@ -1,6 +1,5 @@
 package com.delivery_man.entity;
 
-import com.delivery_man.dto.AdvertisementCreateRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;

@@ -1,7 +1,6 @@
-package com.delivery_man.dto;
+package com.delivery_man.dto.shop;
 
 import com.delivery_man.entity.Shop;
-import com.delivery_man.constant.ClosedDays;
 import com.delivery_man.constant.ShopStatus;
 import lombok.Getter;
 

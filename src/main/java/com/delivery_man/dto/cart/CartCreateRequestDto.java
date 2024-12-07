@@ -1,4 +1,4 @@
-package com.delivery_man.dto;
+package com.delivery_man.dto.cart;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;

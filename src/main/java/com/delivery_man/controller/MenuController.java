@@ -1,10 +1,10 @@
 package com.delivery_man.controller;
 
 import com.delivery_man.config.Const;
-import com.delivery_man.dto.Authentication;
-import com.delivery_man.dto.MenuCreateRequestDto;
-import com.delivery_man.dto.MenuResponseDto;
-import com.delivery_man.dto.MenuUpdateRequestDto;
+import com.delivery_man.dto.auth.Authentication;
+import com.delivery_man.dto.menu.MenuCreateRequestDto;
+import com.delivery_man.dto.menu.MenuResponseDto;
+import com.delivery_man.dto.menu.MenuUpdateRequestDto;
 import com.delivery_man.service.MenuService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

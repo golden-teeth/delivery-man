@@ -2,10 +2,10 @@ package com.delivery_man.controller;
 
 
 import com.delivery_man.config.Const;
-import com.delivery_man.dto.Authentication;
-import com.delivery_man.dto.CartCreateRequestDto;
-import com.delivery_man.dto.CartResponseDto;
-import com.delivery_man.dto.UserValidDto;
+import com.delivery_man.dto.auth.Authentication;
+import com.delivery_man.dto.cart.CartCreateRequestDto;
+import com.delivery_man.dto.cart.CartResponseDto;
+import com.delivery_man.dto.user.UserValidDto;
 import com.delivery_man.service.CartService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

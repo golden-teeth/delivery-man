@@ -1,10 +1,9 @@
 package com.delivery_man.controller;
 
 import com.delivery_man.config.Const;
-import com.delivery_man.dto.Authentication;
-import com.delivery_man.dto.ReviewCreateRequestDto;
-import com.delivery_man.dto.ReviewResponseDto;
-import com.delivery_man.service.OrderService;
+import com.delivery_man.dto.auth.Authentication;
+import com.delivery_man.dto.review.ReviewCreateRequestDto;
+import com.delivery_man.dto.review.ReviewResponseDto;
 import com.delivery_man.service.ReviewService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

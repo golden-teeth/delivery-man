@@ -1,6 +1,6 @@
 package com.delivery_man.entity;
 
-import com.delivery_man.dto.CartCreateRequestDto;
+import com.delivery_man.dto.cart.CartCreateRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

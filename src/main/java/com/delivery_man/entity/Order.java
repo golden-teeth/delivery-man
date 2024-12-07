@@ -1,12 +1,11 @@
 package com.delivery_man.entity;
 
-import com.delivery_man.dto.OrderCreateRequestDto;
+import com.delivery_man.dto.order.OrderCreateRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
