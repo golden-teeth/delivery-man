@@ -1,7 +1,7 @@
 package com.delivery_man.service;
 
-import com.delivery_man.dto.auth.Authentication;
-import com.delivery_man.dto.user.*;
+import com.delivery_man.model.dto.auth.Authentication;
+import com.delivery_man.model.dto.user.*;
 import jakarta.servlet.http.HttpServletRequest;
 
 public interface UserService {

@@ -1,6 +1,6 @@
 package com.delivery_man.constant;
 
-import com.delivery_man.entity.Review;
+import com.delivery_man.model.entity.Review;
 import com.delivery_man.repository.ReviewRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

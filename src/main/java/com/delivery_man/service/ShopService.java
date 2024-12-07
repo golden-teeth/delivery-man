@@ -1,6 +1,6 @@
 package com.delivery_man.service;
 
-import com.delivery_man.dto.shop.*;
+import com.delivery_man.model.dto.shop.*;
 
 import java.util.List;
 
