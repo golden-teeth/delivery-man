@@ -2,12 +2,12 @@ package com.delivery_man.controller;
 
 import com.delivery_man.config.Const;
 import com.delivery_man.dto.*;
-import com.delivery_man.entity.User;
 import com.delivery_man.service.PictureService;
 import com.delivery_man.service.S3Service;
 import com.delivery_man.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -36,19 +36,7 @@ public class UserController {
             @RequestPart(value = "images", required = false) MultipartFile image
             ) throws IOException {
 
-        //회원 가입 한 유저 객체
-        User savedUser = userService.signUpUser(userSignUpRequestDto);
-
-        //picture 테이블에 담을 변수 생성
-        String category = savedUser.getClass().getSimpleName();
-        Long idNumber = savedUser.getId();
-        //업로드 된 이미지 파일 주소
-        String publicUrl = s3Service.uploadImage(image, savedUser);
-
-        //picture 테이블에 저장
-        pictureService.savePicture(publicUrl, category, idNumber);
-
-        return ResponseEntity.ok().body(new UserSignUpResponseDto(savedUser, publicUrl));
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.signUpUser(userSignUpRequestDto, image));
     }
 
     /**

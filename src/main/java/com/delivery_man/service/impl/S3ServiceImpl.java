@@ -5,7 +5,6 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.delivery_man.Exception.ApiException;
 import com.delivery_man.constant.PictureErrorCode;
-import com.delivery_man.entity.User;
 import com.delivery_man.service.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,13 +28,12 @@ public class S3ServiceImpl implements S3Service {
      * 이미지 업로드 로직
      *
      * @param image 입력 받은 이미지
-     * @param user  이미지를 입력한 유저
      * @return
      * @throws IOException
      */
     @Transactional
     @Override
-    public String uploadImage(MultipartFile image, User user) throws IOException {
+    public String uploadImage(MultipartFile image) throws IOException {
 
         //사진을 입력 할 경우
         if (image != null) {
@@ -44,7 +42,7 @@ public class S3ServiceImpl implements S3Service {
             String extension = getImageExtension(image);
 
             //업로드 할 파일 이름 생성
-            String fileName = UUID.randomUUID() + "_" + user.getId() + "_profile" + extension;
+            String fileName = UUID.randomUUID() + "_" + extension;
 
             //메타데이터 설정
             ObjectMetadata objectMetadata = new ObjectMetadata();

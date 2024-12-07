@@ -1,11 +1,13 @@
 package com.delivery_man.service;
 
 import com.delivery_man.dto.*;
-import com.delivery_man.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 public interface UserService {
-    User signUpUser(UserSignUpRequestDto userSignUpRequestDto);
+    UserSignUpResponseDto signUpUser(UserSignUpRequestDto userSignUpRequestDto, MultipartFile image) throws IOException;
 
     Authentication login(UserLoginRequestDto userLoginRequestDto);
 
