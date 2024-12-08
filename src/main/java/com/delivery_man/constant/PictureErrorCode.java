@@ -1,5 +1,6 @@
 package com.delivery_man.constant;
 
+import com.delivery_man.constant.errorcode.ErrorCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

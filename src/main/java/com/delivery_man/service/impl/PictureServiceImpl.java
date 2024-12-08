@@ -1,6 +1,6 @@
 package com.delivery_man.service.impl;
 
-import com.delivery_man.entity.Picture;
+import com.delivery_man.model.entity.Picture;
 import com.delivery_man.repository.PictureRepository;
 import com.delivery_man.service.PictureService;
 import lombok.RequiredArgsConstructor;

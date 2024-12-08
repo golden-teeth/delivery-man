@@ -1,9 +1,9 @@
 package com.delivery_man.service;
 
-import com.delivery_man.dto.AdvertisementApplyRequestDto;
-import com.delivery_man.dto.AdvertisementApplyResponseDto;
-import com.delivery_man.dto.AdvertisementCreateRequestDto;
-import com.delivery_man.dto.AdvertisementCreateResponseDto;
+import com.delivery_man.model.dto.advertisement.AdvertisementApplyRequestDto;
+import com.delivery_man.model.dto.advertisement.AdvertisementApplyResponseDto;
+import com.delivery_man.model.dto.advertisement.AdvertisementCreateRequestDto;
+import com.delivery_man.model.dto.advertisement.AdvertisementCreateResponseDto;
 
 public interface AdvertisementService {
     AdvertisementCreateResponseDto createAdvertisement(Long shopId, Long sessionId, AdvertisementCreateRequestDto dto);
