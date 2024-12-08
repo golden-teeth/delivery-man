@@ -18,19 +18,23 @@ public class UserSignUpResponseDto {
 
     private final LocalDateTime updatedAt;
 
-    public UserSignUpResponseDto(User user) {
+    private final String publicUrl;
+
+    public UserSignUpResponseDto(User user, String publicUrl) {
         this.id = user.getId();
         this.email = user.getEmail();
         this.grade = user.getGrade();
         this.name = user.getName();
         this.updatedAt = user.getUpdatedAt();
+        this.publicUrl = publicUrl;
     }
 
-    public UserSignUpResponseDto(Long id, String email, String grade, String name, LocalDateTime updatedAt) {
+    public UserSignUpResponseDto(Long id, String email, String grade, String name, LocalDateTime updatedAt, String publicUrl) {
         this.id = id;
         this.email = email;
         this.grade = grade;
         this.name = name;
         this.updatedAt = updatedAt;
+        this.publicUrl = publicUrl;
     }
 }
