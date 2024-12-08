@@ -8,10 +8,7 @@ import com.delivery_man.constant.errorcode.UserErrorCode;
 import com.delivery_man.model.dto.cart.CartCreateRequestDto;
 import com.delivery_man.model.dto.cart.CartResponseDto;
 import com.delivery_man.model.dto.user.UserValidDto;
-import com.delivery_man.model.entity.Cart;
-import com.delivery_man.model.entity.Menu;
-import com.delivery_man.model.entity.Shop;
-import com.delivery_man.model.entity.User;
+import com.delivery_man.model.entity.*;
 import com.delivery_man.repository.CartRepository;
 import com.delivery_man.repository.MenuRepository;
 import com.delivery_man.repository.ShopRepository;
@@ -96,6 +93,7 @@ public class CartServiceImpl implements CartService {
         return new CartResponseDto(cartList);
     }
 
+
     @Override
     public CartResponseDto deleteByMenuId(UserValidDto userValidDto, Long menuId) {
         //검증
@@ -104,13 +102,21 @@ public class CartServiceImpl implements CartService {
         User user = userRepository.findById(userValidDto.getUserId())
                 .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
 
-        Cart cart = cartRepository.findByUserIdAndMenuId(user.getId(), menuId)
+        List<Cart> cartList = cartRepository.findByUserId(user.getId());
+        if(cartList.isEmpty()) {
+            throw new ApiException(CartErrorCode.CART_NOT_FOUND);
+        }
+
+        //장바구니 메뉴가 없을 경우 error return
+        Cart cart = cartList.stream()
+                .filter(x -> x.getMenu().getId().equals(menuId))
+                .findAny()
                 .orElseThrow(() -> new ApiException(CartErrorCode.CART_NOT_FOUND));
 
+
         cartRepository.delete(cart);
+        cartList.remove(cart);
 
-
-        List<Cart> cartList = cartRepository.findByUserId(user.getId());
         return new CartResponseDto(cartList);
     }
 
@@ -133,6 +139,7 @@ public class CartServiceImpl implements CartService {
     }
 
     private void validateExpired(List<Cart> cartList) {
+
         if (isBefore1DaysAgo(cartList)) {
             cartList.clear();
         }
