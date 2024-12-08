@@ -1,6 +1,7 @@
 package com.delivery_man.service;
 
-import com.delivery_man.dto.DashBoardGetResponseDto;
+
+import com.delivery_man.model.dto.admin.DashBoardGetResponseDto;
 
 import java.util.List;
 

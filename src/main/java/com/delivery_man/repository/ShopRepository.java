@@ -12,12 +12,13 @@ import java.util.Optional;
 public interface ShopRepository extends JpaRepository<Shop, Long> {
     List<Shop> findAllByUserId(Long sessionId);
 
-    List<Shop> findAllByName(String shopName);
+    @Query("select s from Shop s where s.name LIKE %:shopName%")
+    List<Shop> findAllByName(@Param("shopName") String shopName);
 
     @Query("SELECT s " +
             "FROM Shop s " +
             "LEFT JOIN Advertisement a ON s.id = a.shop.id " +
-            "WHERE s.name = :name AND s.status = :status " +
+            "WHERE s.status = :status AND s.name LIKE %:name% " +
             "ORDER BY " +
             "CASE WHEN a.status = 'APPLY' THEN 1" +
             "     WHEN a.status = 'REQUEST' THEN 2" +

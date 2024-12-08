@@ -12,7 +12,7 @@ public class UserResponseDto {
 
     private final String email;
 
-    private final String grade;
+    private final String role;
 
     private final String name;
 
@@ -20,10 +20,10 @@ public class UserResponseDto {
 
     private final BigDecimal totalPoints;
 
-    public UserResponseDto(Long userId, String email, String grade, String name, String status, BigDecimal totalPoints) {
+    public UserResponseDto(Long userId, String email, String role, String name, String status, BigDecimal totalPoints) {
         this.userId = userId;
         this.email = email;
-        this.grade = grade;
+        this.role = role;
         this.name = name;
         this.status = status;
         this.totalPoints = totalPoints;
@@ -32,7 +32,7 @@ public class UserResponseDto {
     public UserResponseDto(User user, BigDecimal totalPoints) {
         this.userId = user.getId();
         this.email = user.getEmail();
-        this.grade = user.getGrade();
+        this.role = user.getRole();
         this.name = user.getName();
         this.status = user.getStatus();
         this.totalPoints = totalPoints;

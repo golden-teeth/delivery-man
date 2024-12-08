@@ -38,10 +38,10 @@ public class Shop extends CreateAndUpdateDateEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy="shop", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy="shop")
     private List<Menu> menus;
 
-    @OneToMany(mappedBy = "shop", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "shop")
     private List<Order> orders;
 
     public Shop() {

@@ -1,6 +1,6 @@
 package com.delivery_man.controller;
 
-import com.delivery_man.dto.DashBoardGetResponseDto;
+import com.delivery_man.model.dto.admin.DashBoardGetResponseDto;
 import com.delivery_man.service.AdminServce;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

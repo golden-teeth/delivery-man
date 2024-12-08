@@ -21,7 +21,7 @@ public class UserSignUpRequestDto {
     private String password;
 
     @NotNull(message = "가입 유형을 입력해주세요.")
-    private String grade;
+    private String role;
 
     @NotNull(message = "이름을 입력해주세요.")
     private String name;
@@ -30,7 +30,7 @@ public class UserSignUpRequestDto {
         return new User(
                 this.email,
                 this.password,
-                this.grade,
+                this.role,
                 this.name
         );
     }
