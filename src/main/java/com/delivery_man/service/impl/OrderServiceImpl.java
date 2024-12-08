@@ -51,6 +51,12 @@ public class OrderServiceImpl implements OrderService {
         // 장바구니를 주문으로 변경
         Order order = new Order(carts);
 
+        //장바구니의 총 금액이 최소 주문 조건보다 큰지 확인
+        if (carts.get(0).getMenu().getShop().getMinimumPrice().compareTo(order.getTotalPrice()) >0) {
+            throw new ApiException(OrderErrorCode.ORDER_NOT_AVAILABLE);
+        }
+
+
         //주문 저장
         orderRepository.save(order);
 
