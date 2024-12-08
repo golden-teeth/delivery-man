@@ -1,7 +1,7 @@
 package com.delivery_man.model.dto.shop;
 
-import com.delivery_man.model.entity.Shop;
 import com.delivery_man.constant.ShopStatus;
+import com.delivery_man.model.entity.Shop;
 import lombok.Getter;
 
 import java.math.BigDecimal;
@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Getter
-public class ShopResponseDto {
+public class ShopWithPictureResponseDto {
     private final Long id;
 
     private final String name;
@@ -29,7 +29,9 @@ public class ShopResponseDto {
 
     private final Long userId;
 
-    public ShopResponseDto(Long id, String name, BigDecimal minimumPrice, ShopStatus status, String openAt, String closeAt, List<String> closedDays, LocalDateTime updatedAt, Long userId) {
+    private final String publicUrl;
+
+    public ShopWithPictureResponseDto(Long id, String name, BigDecimal minimumPrice, ShopStatus status, String openAt, String closeAt, List<String> closedDays, LocalDateTime updatedAt, Long userId, String publicUrl) {
         this.id = id;
         this.name = name;
         this.minimumPrice = minimumPrice;
@@ -39,9 +41,10 @@ public class ShopResponseDto {
         this.closedDays = closedDays;
         this.updatedAt = updatedAt;
         this.userId = userId;
+        this.publicUrl = publicUrl;
     }
 
-    public ShopResponseDto(Shop shop) {
+    public ShopWithPictureResponseDto(Shop shop, String publicUrl) {
         this.id = shop.getId();
         this.name = shop.getName();
         this.minimumPrice = shop.getMinimumPrice();
@@ -51,5 +54,6 @@ public class ShopResponseDto {
         this.closedDays = Collections.singletonList(shop.getClosedDays());
         this.updatedAt = shop.getUpdatedAt();
         this.userId = shop.getUser().getId();
+        this.publicUrl = publicUrl;
     }
 }

@@ -9,12 +9,16 @@ import com.delivery_man.model.entity.Point;
 import com.delivery_man.model.entity.User;
 import com.delivery_man.repository.PointRepository;
 import com.delivery_man.repository.UserRepository;
+import com.delivery_man.service.PictureService;
+import com.delivery_man.service.S3Service;
 import com.delivery_man.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
@@ -26,6 +30,8 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PointRepository pointRepository;
+    private final S3Service s3Service;
+    private final PictureService pictureService;
 
     /**
      * 회원 가입 로직
@@ -35,7 +41,7 @@ public class UserServiceImpl implements UserService {
      */
     @Transactional
     @Override
-    public UserSignUpResponseDto signUpUser(UserSignUpRequestDto userSignUpRequestDto) {
+    public UserSignUpResponseDto signUpUser(UserSignUpRequestDto userSignUpRequestDto, MultipartFile image) throws IOException {
 
         //이메일로 유저 조회
         Optional<User> findUser = userRepository.findByEmail(userSignUpRequestDto.getEmail());
@@ -48,7 +54,16 @@ public class UserServiceImpl implements UserService {
         //repository 에 저장
         User savedUser = userRepository.save(userSignUpRequestDto.toEntity());
 
-        return new UserSignUpResponseDto(savedUser);
+        //picture 테이블에 담을 변수 생성
+        String category = savedUser.getClass().getSimpleName();
+        Long idNumber = savedUser.getId();
+        //업로드 된 이미지 파일 주소
+        String publicUrl = s3Service.uploadImage(image);
+
+        //picture 테이블에 저장
+        pictureService.savePicture(publicUrl, category, idNumber);
+
+        return new UserSignUpResponseDto(savedUser, publicUrl);
     }
 
     /**

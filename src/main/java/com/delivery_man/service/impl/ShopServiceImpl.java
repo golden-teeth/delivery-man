@@ -2,22 +2,26 @@ package com.delivery_man.service.impl;
 
 import com.delivery_man.Exception.ApiException;
 import com.delivery_man.constant.ReviewFilterType;
+import com.delivery_man.constant.ShopStatus;
 import com.delivery_man.constant.errorcode.ShopErrorCode;
 import com.delivery_man.constant.errorcode.UserErrorCode;
 import com.delivery_man.model.dto.menu.MenuResponseDto;
 import com.delivery_man.model.dto.review.ReviewResponseDto;
-import com.delivery_man.constant.ShopStatus;
 import com.delivery_man.model.dto.shop.*;
 import com.delivery_man.model.entity.*;
 import com.delivery_man.repository.*;
+import com.delivery_man.service.PictureService;
+import com.delivery_man.service.S3Service;
 import com.delivery_man.service.ShopService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -32,15 +36,18 @@ public class ShopServiceImpl implements ShopService {
     private final MenuRepository menuRepository;
     private final ReviewRepository reviewRepository;
     private final OrderRepository orderRepository;
+    private final S3Service s3Service;
+    private final PictureService pictureService;
 
     /**
      * 가게 생성
+     *
      * @param dto
      * @param sessionId
      * @return
      */
     @Override
-    public ShopResponseDto createShop(ShopCreateRequestDto dto, Long sessionId) {
+    public ShopWithPictureResponseDto createShop(ShopCreateRequestDto dto, Long sessionId, MultipartFile image) throws IOException {
         User findUser = userRepository.findById(sessionId)
                 .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
         List<Shop> findShops = shopRepository.findAllByUserId(sessionId);
@@ -50,17 +57,28 @@ public class ShopServiceImpl implements ShopService {
                 cnt++;
             }
         }
-        if(cnt >= 3){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"가게 소유는 3개만 가능합니다.");
+        if (cnt >= 3) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "가게 소유는 3개만 가능합니다.");
         }
 
-        Shop shop = new Shop(dto.getName(),dto.getMinimumPrice(),dto.getStatus(),dto.getOpenAt(), dto.getCloseAt(), dto.getClosedDays(),findUser);
+        Shop shop = new Shop(dto.getName(), dto.getMinimumPrice(), dto.getStatus(), dto.getOpenAt(), dto.getCloseAt(), dto.getClosedDays(), findUser);
         Shop createShop = shopRepository.save(shop);
-        return new ShopResponseDto(createShop);
+
+        //picture 테이블에 담을 변수 생성
+        String category = createShop.getClass().getSimpleName();
+        Long idNumber = createShop.getId();
+        //업로드 된 이미지 파일 주소
+        String publicUrl = s3Service.uploadImage(image);
+
+        //picture 테이블에 저장
+        pictureService.savePicture(publicUrl, category, idNumber);
+
+        return new ShopWithPictureResponseDto(createShop, publicUrl);
     }
 
     /**
      * 가게 목록 조회
+     *
      * @param shopName
      * @return
      */
@@ -70,13 +88,13 @@ public class ShopServiceImpl implements ShopService {
                 .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
 
         List<Shop> findShops = new ArrayList<>();
-        if("owner".equals(findUser.getGrade())){
+        if ("owner".equals(findUser.getGrade())) {
             findShops = shopRepository.findAllByName(shopName);
-        }else if("user".equals(findUser.getGrade())){
-            findShops = shopRepository.findAllByNameAndStatus(shopName,ShopStatus.OPEN);
+        } else if ("user".equals(findUser.getGrade())) {
+            findShops = shopRepository.findAllByNameAndStatus(shopName, ShopStatus.OPEN);
         }
 
-        if(findShops.isEmpty()){
+        if (findShops.isEmpty()) {
             throw new ApiException(ShopErrorCode.SHOP_NOT_FOUND);
         }
         return findShops.stream()
@@ -87,6 +105,7 @@ public class ShopServiceImpl implements ShopService {
 
     /**
      * 가게 상세 조회
+     *
      * @param shopId
      * @return
      */
@@ -96,13 +115,13 @@ public class ShopServiceImpl implements ShopService {
                 .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
 
         Optional<Shop> findShop = Optional.empty();
-        if("owner".equals(findUser.getGrade())){
+        if ("owner".equals(findUser.getGrade())) {
             findShop = shopRepository.findById(shopId);
-        }else if("user".equals(findUser.getGrade())){
+        } else if ("user".equals(findUser.getGrade())) {
             findShop = shopRepository.findShopByIdAndStatus(shopId, ShopStatus.OPEN);
         }
 
-        if(findShop.isEmpty()){
+        if (findShop.isEmpty()) {
             throw new ApiException(ShopErrorCode.SHOP_NOT_FOUND);
         }
 
@@ -120,13 +139,13 @@ public class ShopServiceImpl implements ShopService {
 
         // Sort
         ReviewFilterType filterType = ReviewFilterType.valueOf(sortType.toUpperCase());
-        Pageable pageable = filterType.createPageable(page,size);
+        Pageable pageable = filterType.createPageable(page, size);
 
         List<Review> allReviews = filterType.filterReviews(reviewRepository, ordersIds, sessionId, ratingMin, ratingMax, pageable);
 
         List<ReviewResponseDto> reviewDtos = new ArrayList<>();
-        for(Review review : allReviews){
-            ReviewResponseDto reviewResponseDto = new ReviewResponseDto(review.getId(), review.getUser().getName(),review.getContent(),review.getRating());
+        for (Review review : allReviews) {
+            ReviewResponseDto reviewResponseDto = new ReviewResponseDto(review.getId(), review.getUser().getName(), review.getContent(), review.getRating());
             reviewDtos.add(reviewResponseDto);
         }
 
@@ -140,6 +159,7 @@ public class ShopServiceImpl implements ShopService {
 
     /**
      * 가게 상태 업데이트
+     *
      * @param shopId
      * @return
      */

@@ -5,6 +5,7 @@ import com.delivery_man.model.dto.auth.Authentication;
 import com.delivery_man.model.dto.menu.MenuCreateRequestDto;
 import com.delivery_man.model.dto.menu.MenuResponseDto;
 import com.delivery_man.model.dto.menu.MenuUpdateRequestDto;
+import com.delivery_man.model.dto.menu.MenuWithPictureResponseDto;
 import com.delivery_man.service.MenuService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -21,13 +25,14 @@ public class MenuController {
     private final MenuService service;
 
     @PostMapping
-    public ResponseEntity<MenuResponseDto> create(@PathVariable("shopId") Long shopId,
-                                                  @Valid @RequestBody MenuCreateRequestDto dto,
-                                                  @SessionAttribute(name = Const.SESSION_KEY)Authentication authentication
-                                                  ) {
+    public ResponseEntity<MenuWithPictureResponseDto> create(@PathVariable("shopId") Long shopId,
+                                                             @Valid @RequestPart MenuCreateRequestDto dto,
+                                                             @RequestPart(value = "images", required = false) MultipartFile image,
+                                                             @SessionAttribute(name = Const.SESSION_KEY)Authentication authentication
+                                                  ) throws IOException {
         dto.setIds(authentication.getId(), shopId);
-        MenuResponseDto responseDto = service.create(dto);
-        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+        MenuWithPictureResponseDto responseDto = service.create(dto, image);
+        return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
     @PutMapping("/{menuId}")

@@ -9,9 +9,13 @@ import com.delivery_man.model.dto.user.UserSignUpResponseDto;
 import com.delivery_man.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/users")
@@ -28,9 +32,11 @@ public class UserController {
      */
     @PostMapping("/signup")
     public ResponseEntity<UserSignUpResponseDto> creatUser(
-            @RequestBody UserSignUpRequestDto userSignUpRequestDto
-    ) {
-        return ResponseEntity.ok().body(userService.signUpUser(userSignUpRequestDto));
+            @RequestPart("request") UserSignUpRequestDto userSignUpRequestDto,
+            @RequestPart(value = "images", required = false) MultipartFile image
+            ) throws IOException {
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.signUpUser(userSignUpRequestDto, image));
     }
 
     /**
@@ -62,7 +68,6 @@ public class UserController {
      */
     @GetMapping("/{userId}")
     public ResponseEntity<UserResponseDto> findUser(@PathVariable Long userId,
-                                                    HttpServletRequest request,
                                                     @SessionAttribute(name = Const.SESSION_KEY) Authentication session) {
 
         Long sessionId = session.getId();
