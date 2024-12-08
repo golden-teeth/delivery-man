@@ -17,6 +17,7 @@ import com.delivery_man.repository.MenuRepository;
 import com.delivery_man.repository.ShopRepository;
 import com.delivery_man.repository.UserRepository;
 import com.delivery_man.service.CartService;
+import com.delivery_man.validate.UserValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,10 +34,12 @@ public class CartServiceImpl implements CartService {
     private final ShopRepository shopRepository;
     private final MenuRepository menuRepository;
 
+    private final UserValidator userValidation;
+
     @Override
     public CartResponseDto create(CartCreateRequestDto dto) {
         //검증
-        validateSessionAndUser(dto.getUserId(),dto.getAuthUserId());
+        userValidation.validateWithSession(dto.getUserId(),dto.getAuthUserId());
         //user 검증
         User user = userRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
@@ -69,7 +72,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public CartResponseDto find(Long userId, Long sessionId) {
         //검증
-        validateSessionAndUser(userId,sessionId);
+        userValidation.validateWithSession(userId,sessionId);
         //user 검증
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
@@ -85,7 +88,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public CartResponseDto deleteByMenuId(UserValidDto userValidDto, Long menuId) {
         //검증
-        validateSessionAndUser(userValidDto.getSessionId(), userValidDto.getUserId());
+        userValidation.validateWithSession(userValidDto.getSessionId(), userValidDto.getUserId());
         //user 검증
         User user = userRepository.findById(userValidDto.getUserId())
                 .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
@@ -100,9 +103,15 @@ public class CartServiceImpl implements CartService {
         return new CartResponseDto(cartList);
     }
 
-    private static void validateSessionAndUser(Long userId, Long sessionId) {
-        if (userId !=sessionId) {
-            throw new ApiException(UserErrorCode.INVALID_SESSION_ID);
-        }
+    @Override
+    public void deleteAll(UserValidDto userValidDto) {
+        //검증
+        userValidation.validateWithSession(userValidDto.getSessionId(), userValidDto.getUserId());
+        //user 검증
+        User user = userRepository.findById(userValidDto.getUserId())
+                .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
+
+        cartRepository.deleteById(userValidDto.getUserId());
     }
+
 }
