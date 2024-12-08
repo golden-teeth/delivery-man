@@ -1,6 +1,6 @@
 package com.delivery_man.repository;
 
-import com.delivery_man.dto.DashBoardGetResponseDto;
+import com.delivery_man.model.dto.admin.DashBoardGetResponseDto;
 import com.delivery_man.model.entity.Order;
 import com.delivery_man.model.entity.Shop;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,7 +15,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     List<Order> findByShopId(Long id);
 
-    @Query("select new com.delivery_man.dto.DashBoardGetResponseDto(" +
+    @Query("select new com.delivery_man.model.dto.admin.DashBoardGetResponseDto(" +
             "COUNT(o.id), SUM(o.totalPrice), " +
             "CASE WHEN :shopName IS NULL THEN 'ALL' ELSE s.name END) " +
             "from Order o " +

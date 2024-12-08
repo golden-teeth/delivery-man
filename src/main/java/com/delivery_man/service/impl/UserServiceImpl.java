@@ -86,7 +86,7 @@ public class UserServiceImpl implements UserService {
             throw new ApiException(UserErrorCode.USER_NOT_FOUND);
         }
 
-        return new Authentication(findUser.get().getId(), findUser.get().getEmail(), findUser.get().getGrade());
+        return new Authentication(findUser.get().getId(), findUser.get().getEmail(), findUser.get().getRole());
     }
 
     /**

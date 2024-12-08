@@ -9,11 +9,11 @@ public class Authentication {
 
     private final String email;
 
-    private final String grade;
+    private final String role;
 
-    public Authentication(Long id, String email, String grade) {
+    public Authentication(Long id, String email, String role) {
         this.id = id;
         this.email = email;
-        this.grade = grade;
+        this.role = role;
     }
 }

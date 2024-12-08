@@ -79,7 +79,7 @@ public class OrderServiceImpl implements OrderService {
         User user = userRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
 
-        if (!user.getGrade().equals("owner")) {
+        if (!user.getRole().equals("owner")) {
             throw new ApiException(UserErrorCode.INVALID_GRADE);
         }
 

@@ -73,7 +73,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         User findUser = userRepository.findById(sessionId)
                 .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
 
-        if(!findAd.getShop().getUser().getId().equals(sessionId) || findUser.getGrade().equals("admin")){
+        if(!findAd.getShop().getUser().getId().equals(sessionId) || findUser.getRole().equals("admin")){
             throw new ApiException(AdErrorCode.INVALID_SHOP_AD);
         }
 

@@ -22,7 +22,7 @@ public class User extends CreateAndUpdateDateEntity {
     private String password;
 
     @Column(nullable = false, length = 10)
-    private String grade;
+    private String role;
 
     @Column(nullable = false, length = 10)
     private String name;
@@ -38,10 +38,10 @@ public class User extends CreateAndUpdateDateEntity {
     public User() {
     }
 
-    public User(String email, String password, String grade, String name) {
+    public User(String email, String password, String role, String name) {
         this.email = email;
         this.password = PasswordEncoder.encode(password);
-        this.grade = grade;
+        this.role = role;
         this.name = name;
         this.status = "normal";
     }

@@ -1,7 +1,6 @@
 package com.delivery_man.service.impl;
 
 import com.delivery_man.Exception.ApiException;
-import com.delivery_man.dto.*;
 import com.delivery_man.constant.ShopStatus;
 import com.delivery_man.constant.errorcode.ShopErrorCode;
 import com.delivery_man.constant.errorcode.UserErrorCode;
@@ -87,9 +86,9 @@ public class ShopServiceImpl implements ShopService {
                 .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
 
         List<Shop> findShops = new ArrayList<>();
-        if ("owner".equals(findUser.getGrade())) {
+        if ("owner".equals(findUser.getRole())) {
             findShops = shopRepository.findAllByName(shopName);
-        } else if ("user".equals(findUser.getGrade())) {
+        } else if ("user".equals(findUser.getRole())) {
             findShops = shopRepository.findAllByNameAndStatus(shopName, ShopStatus.OPEN);
         }
 
@@ -114,9 +113,9 @@ public class ShopServiceImpl implements ShopService {
                 .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
 
         Optional<Shop> findShop = Optional.empty();
-        if ("owner".equals(findUser.getGrade())) {
+        if ("owner".equals(findUser.getRole())) {
             findShop = shopRepository.findById(shopId);
-        } else if ("user".equals(findUser.getGrade())) {
+        } else if ("user".equals(findUser.getRole())) {
             findShop = shopRepository.findShopByIdAndStatus(shopId, ShopStatus.OPEN);
         }
 

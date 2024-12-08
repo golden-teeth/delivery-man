@@ -36,10 +36,10 @@ public class AdminAuthInterceptor implements HandlerInterceptor {
         Authentication authentication = (Authentication) session.getAttribute(Const.SESSION_KEY);
 
         //객체에서 유형 조회
-        String grade = authentication.getGrade();
+        String role = authentication.getRole();
 
         //admin 인지 검증
-        if (!Objects.equals(grade, "admin")) {
+        if (!Objects.equals(role, "admin")) {
             throw new ApiException(UserErrorCode.INVALID_GRADE);
         }
         return true;

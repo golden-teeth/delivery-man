@@ -1,6 +1,6 @@
 package com.delivery_man.service.impl;
 
-import com.delivery_man.dto.DashBoardGetResponseDto;
+import com.delivery_man.model.dto.admin.DashBoardGetResponseDto;
 import com.delivery_man.repository.OrderRepository;
 import com.delivery_man.repository.ShopRepository;
 import com.delivery_man.service.AdminServce;
@@ -39,7 +39,7 @@ public class AdminServiceImpl implements AdminServce {
             for(String shopName : shopNames){
                 DashBoardGetResponseDto dto = orderRepository.findOrderCountAndAmount(startDate.atStartOfDay(), endDate.plusDays(1).atStartOfDay(),shopName);
                 if(dto == null){
-                    dto = new DashBoardGetResponseDto(0L, BigDecimal.ZERO,shopName != null ? shopName : "ALL");
+                    dto = new DashBoardGetResponseDto(0L, BigDecimal.ZERO,shopName);
                     dto.setMessage("조회 결과가 없습니다");
                 }else{
                     dto.setMessage("조회 완료");

@@ -12,7 +12,7 @@ public class UserSignUpResponseDto {
 
     private final String email;
 
-    private final String grade;
+    private final String role;
 
     private final String name;
 
@@ -23,16 +23,16 @@ public class UserSignUpResponseDto {
     public UserSignUpResponseDto(User user, String publicUrl) {
         this.id = user.getId();
         this.email = user.getEmail();
-        this.grade = user.getGrade();
+        this.role = user.getRole();
         this.name = user.getName();
         this.updatedAt = user.getUpdatedAt();
         this.publicUrl = publicUrl;
     }
 
-    public UserSignUpResponseDto(Long id, String email, String grade, String name, LocalDateTime updatedAt, String publicUrl) {
+    public UserSignUpResponseDto(Long id, String email, String role, String name, LocalDateTime updatedAt, String publicUrl) {
         this.id = id;
         this.email = email;
-        this.grade = grade;
+        this.role = role;
         this.name = name;
         this.updatedAt = updatedAt;
         this.publicUrl = publicUrl;
