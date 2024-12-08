@@ -1,7 +1,11 @@
 package com.delivery_man.controller;
 
-import com.delivery_man.config.Const;
-import com.delivery_man.dto.*;
+import com.delivery_man.constant.Const;
+import com.delivery_man.model.dto.advertisement.AdvertisementApplyRequestDto;
+import com.delivery_man.model.dto.advertisement.AdvertisementApplyResponseDto;
+import com.delivery_man.model.dto.advertisement.AdvertisementCreateRequestDto;
+import com.delivery_man.model.dto.advertisement.AdvertisementCreateResponseDto;
+import com.delivery_man.model.dto.auth.Authentication;
 import com.delivery_man.service.AdvertisementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

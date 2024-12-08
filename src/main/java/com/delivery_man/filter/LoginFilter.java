@@ -2,8 +2,8 @@ package com.delivery_man.filter;
 
 import com.delivery_man.Exception.ApiException;
 import com.delivery_man.Exception.ErrorResponse;
-import com.delivery_man.config.Const;
-import com.delivery_man.constant.SessionErrorCode;
+import com.delivery_man.constant.Const;
+import com.delivery_man.constant.errorcode.SessionErrorCode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;

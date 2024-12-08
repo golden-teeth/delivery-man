@@ -1,6 +1,6 @@
 package com.delivery_man.repository;
 
-import com.delivery_man.entity.Point;
+import com.delivery_man.model.entity.Point;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

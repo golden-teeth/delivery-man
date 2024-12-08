@@ -1,6 +1,9 @@
 package com.delivery_man.config;
 
+import com.delivery_man.filter.AdminAuthInterceptor;
 import com.delivery_man.filter.LoginFilter;
+import com.delivery_man.filter.OwnerAuthInterceptor;
+import com.delivery_man.filter.UserAuthInterceptor;
 import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
