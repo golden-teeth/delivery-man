@@ -51,7 +51,8 @@ public class CartServiceImpl implements CartService {
 
         List<Cart> cartList = cartRepository.findByUserId(user.getId());
         //cartList 검증
-        validateCartListExpired(cartList);
+        validateCartList(cartList, shop);
+
 
         /*
         요청한 메뉴가 없을 경우 장바구니에 추가
@@ -87,12 +88,10 @@ public class CartServiceImpl implements CartService {
             throw new ApiException(CartErrorCode.CART_NOT_FOUND);
         }
 
-        validateCartListExpired(cartList);
-
+        validateExpired(cartList);
 
         return new CartResponseDto(cartList);
     }
-
 
 
     @Override
@@ -121,7 +120,26 @@ public class CartServiceImpl implements CartService {
         return new CartResponseDto(cartList);
     }
 
-    private void validateCartListExpired(List<Cart> cartList) {
+    /**
+     * cartList를 검증
+     * 1. cartList가 만료 되었는지
+     * 2. cartList와 요청온 메뉴의 식당이 동일한지
+     * @param cartList
+     * @param shop
+     */
+    private void validateCartList(List<Cart> cartList, Shop shop) {
+        validateExpired(cartList);
+        validateShop(cartList, shop);
+    }
+
+    private static void validateShop(List<Cart> cartList, Shop shop) {
+        if(!cartList.isEmpty() && !cartList.get(0).getMenu().getShop().getId().equals(shop.getId())) {
+            cartList.clear();
+        }
+    }
+
+    private void validateExpired(List<Cart> cartList) {
+
         if (isBefore1DaysAgo(cartList)) {
             cartList.clear();
         }
