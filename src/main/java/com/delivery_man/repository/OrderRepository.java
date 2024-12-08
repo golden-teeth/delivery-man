@@ -1,8 +1,6 @@
 package com.delivery_man.repository;
 
 import com.delivery_man.dto.DashBoardGetResponseDto;
-import com.delivery_man.entity.Order;
-import com.delivery_man.entity.Shop;
 import com.delivery_man.model.entity.Order;
 import com.delivery_man.model.entity.Shop;
 import org.springframework.data.jpa.repository.JpaRepository;
