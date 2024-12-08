@@ -103,15 +103,4 @@ public class CartServiceImpl implements CartService {
         return new CartResponseDto(cartList);
     }
 
-    @Override
-    public void deleteAll(UserValidDto userValidDto) {
-        //검증
-        userValidation.validateWithSession(userValidDto.getSessionId(), userValidDto.getUserId());
-        //user 검증
-        User user = userRepository.findById(userValidDto.getUserId())
-                .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
-
-        cartRepository.deleteById(userValidDto.getUserId());
-    }
-
 }

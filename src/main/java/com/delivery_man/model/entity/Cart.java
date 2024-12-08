@@ -20,8 +20,6 @@ public class Cart extends CreateAndUpdateDateEntity{
     @JoinColumn(name = "menu_id")
     private Menu menu;
 
-    // store
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
