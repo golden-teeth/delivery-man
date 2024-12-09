@@ -29,7 +29,7 @@ public class AdvertisementController {
         return new ResponseEntity<>(advertisementCreateResponseDto, HttpStatus.CREATED);
     }
 
-    @PostMapping("/{shopId}/{advertisementId}/apply")
+    @PostMapping("/{advertisementId}/apply")
     public ResponseEntity<AdvertisementApplyResponseDto> applyAdvertisement(
             @PathVariable Long advertisementId,
             @RequestBody AdvertisementApplyRequestDto dto,

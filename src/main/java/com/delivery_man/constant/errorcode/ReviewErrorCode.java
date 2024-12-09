@@ -11,7 +11,7 @@ public enum ReviewErrorCode implements ErrorCode {
     REVIEW_NOT_CREATED(HttpStatus.BAD_REQUEST, "주문 완료 후 리뷰를 작성해주세요."),
 
     /* 401 */
-    INVALID_AUTHOR(HttpStatus.UNAUTHORIZED, "본인의 주문 건에만 리뷰를 작성할 수 있습니다.");
+    INVALID_AUTHOR(HttpStatus.UNAUTHORIZED, "잘못된 접근입니다.");
 
     private final HttpStatus httpStatus;
     private final String message;
