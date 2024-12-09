@@ -31,13 +31,16 @@ public class AdminServiceImpl implements AdminServce {
         LocalDate endDate = LocalDate.parse(end);
 
         List<DashBoardGetResponseDto> dashBoardGetResponseDtos = new ArrayList<>();
+        // 가게 이름이 전달됐는지 확인
         if(shopNames==null){
             DashBoardGetResponseDto dto = orderRepository.findOrderCountAndAmount(startDate.atStartOfDay(), endDate.plusDays(1).atStartOfDay(),null);
             dto.setMessage("조회 완료");
             dashBoardGetResponseDtos.add(dto);
         }else{
+            // 가게 이름이 전달됐다면
             for(String shopName : shopNames){
                 DashBoardGetResponseDto dto = orderRepository.findOrderCountAndAmount(startDate.atStartOfDay(), endDate.plusDays(1).atStartOfDay(),shopName);
+                // 가게 조회 결과가 있는지 확인
                 if(dto == null){
                     dto = new DashBoardGetResponseDto(0L, BigDecimal.ZERO,shopName);
                     dto.setMessage("조회 결과가 없습니다");
